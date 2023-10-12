@@ -9,6 +9,7 @@ const routes: CustomRouteRecordRaw[] = [
     meta: {
       requiresAuth: false,
       title: 'Login',
+      hideAppBar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ const routes: CustomRouteRecordRaw[] = [
     meta: {
       requiresAuth: false,
       title: 'Signup',
+      hideAppBar: true,
     },
   },
   {
