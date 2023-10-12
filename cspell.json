@@ -1,0 +1,22 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "language": "en,pt,pt-BR,lorem",
+  "words": [
+    "commitlint",
+    "composables",
+    "Composables",
+    "firestore",
+    "materialdesignicons",
+    "pinia",
+    "Roboto",
+    "supabase",
+    "unsub",
+    "vuetify",
+    "webfontloader"
+  ],
+  "ignoreWords": [],
+  "import": []
+}
