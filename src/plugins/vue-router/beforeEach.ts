@@ -1,6 +1,6 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { APP_TITLE } from '@/config'
-const user = true
+const user = false
 
 export default (
   to: RouteLocationNormalized,
