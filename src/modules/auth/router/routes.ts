@@ -5,7 +5,7 @@ const routes: CustomRouteRecordRaw[] = [
   {
     path: '/login',
     name: 'LoginView',
-    component: () => import('../views/SigninView.vue'),
+    component: () => import('../views/LoginView.vue'),
     meta: {
       requiresAuth: false,
       title: 'Login',
@@ -27,7 +27,7 @@ const routes: CustomRouteRecordRaw[] = [
     name: 'RestrictView',
     component: () => import('../views/RestrictView.vue'),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       title: 'Restrict',
     },
   },
