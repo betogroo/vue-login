@@ -16,7 +16,7 @@ const useAuth = () => {
       isPending.value = true
       await delay()
       if (password !== passwordConfirm) {
-        throw new Error('As senhas não são iguais')
+        throw new Error('As senhas não coincidem')
       }
       const { data, error: err } = await supabase.auth.signUp({
         email,
@@ -27,7 +27,7 @@ const useAuth = () => {
     } catch (err) {
       const e = err as Error
       error.value = e.message
-      console.log(e.message)
+      console.log(error)
     } finally {
       isPending.value = false
     }

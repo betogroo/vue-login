@@ -2,7 +2,7 @@
 import { SignupForm } from '../components'
 import type { Credentials } from '../types'
 import { useAuth } from '../composables'
-const { signup: _signup, isPending } = useAuth()
+const { signup: _signup, isPending, error } = useAuth()
 const signup = async (credentials: Credentials) => {
   await _signup(credentials)
 }
@@ -22,6 +22,19 @@ const signup = async (credentials: Credentials) => {
         :is-pending="isPending"
         @signup="(value) => signup(value)"
       />
+      <v-alert
+        v-if="error"
+        border="start"
+        class="d-flex align-center mt-2"
+        prominent
+        type="error"
+      >
+        <template #prepend>
+          <v-icon>mdi-alert-circle-outline</v-icon>
+        </template>
+        <template #title><span class="text-h5">Erro</span></template>
+        <template #text>{{ error?.toString() }}</template>
+      </v-alert>
     </v-card>
   </v-container>
 </template>
