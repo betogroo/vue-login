@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Credentials } from '../types'
+interface Props {
+  isPending?: boolean
+}
+withDefaults(defineProps<Props>(), {
+  isPending: false,
+})
 const emit = defineEmits<{
   signup: [credentials: Credentials]
 }>()
@@ -51,6 +57,7 @@ const handleSubmit = () => {
         <v-btn
           block
           color="primary"
+          :loading="isPending"
           type="submit"
           >Cadastrar</v-btn
         >

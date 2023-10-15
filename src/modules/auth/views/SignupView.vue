@@ -2,7 +2,7 @@
 import { SignupForm } from '../components'
 import type { Credentials } from '../types'
 import { useAuth } from '../composables'
-const { signup: _signup } = useAuth()
+const { signup: _signup, isPending } = useAuth()
 const signup = async (credentials: Credentials) => {
   await _signup(credentials)
 }
@@ -18,7 +18,10 @@ const signup = async (credentials: Credentials) => {
       <template #title>
         <div class="text-center text-h4 pb-2">Signup</div>
       </template>
-      <SignupForm @signup="(value) => signup(value)" />
+      <SignupForm
+        :is-pending="isPending"
+        @signup="(value) => signup(value)"
+      />
     </v-card>
   </v-container>
 </template>
