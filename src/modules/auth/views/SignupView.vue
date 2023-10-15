@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { SignupForm } from '../components'
 import type { Credentials } from '../types'
-const signup = (credentials: Credentials) => {
-  console.log(credentials)
+import { useAuth } from '../composables'
+const { signup: _signup } = useAuth()
+const signup = async (credentials: Credentials) => {
+  await _signup(credentials)
 }
 </script>
 
