@@ -16,13 +16,16 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "@supabase/supabase-js": "^2.38.1",
+    "@vee-validate/zod": "^4.11.8",
     "core-js": "^3.29.0",
     "lint-staged": "^14.0.1",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
+    "vee-validate": "^4.11.8",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
-    "vuetify": "^3.0.0"
+    "vuetify": "^3.0.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/types": "^7.21.4",
