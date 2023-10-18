@@ -1,32 +1,57 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Credentials } from '../types'
+import { useField, useForm } from 'vee-validate'
+import { object, z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+
 interface Props {
   isPending?: boolean
 }
 withDefaults(defineProps<Props>(), {
   isPending: false,
 })
+
 const emit = defineEmits<{
-  signup: [credentials: Credentials]
+  signup: [values: any]
 }>()
-const credentials = ref<Credentials>({
-  email: '',
-  password: '',
-  passwordConfirm: '',
+
+const validationSchema = toTypedSchema(
+  object({
+    email: z.string().min(1, 'Campo obrigatório').email('Email inválido'),
+    password: z
+      .string()
+      .min(1, 'Campo obrigatório')
+      .min(6, 'No mínimo 6 dígitos'),
+    passwordConfirm: z
+      .string()
+      .min(1, 'Campo obrigatório')
+      .min(6, 'No mínimo 6 dígitos'),
+  }).refine((data) => data.password === data.passwordConfirm, {
+    message: 'As senhas não coincidem',
+    path: ['passwordConfirm'],
+  }),
+)
+
+const { handleSubmit, meta, values } = useForm({
+  validationSchema,
 })
-const handleSubmit = () => {
-  emit('signup', credentials.value)
-}
+
+const email = useField('email', validationSchema)
+const password = useField('password', validationSchema)
+const passwordConfirm = useField('passwordConfirm', validationSchema)
+
+const onSubmit = handleSubmit(async () => {
+  console.log(values)
+  emit('signup', values)
+})
 </script>
 
 <template>
-  <v-form @submit.prevent="handleSubmit">
+  <v-form @submit.prevent="onSubmit">
     <v-row>
       <v-col cols="12">
         <v-text-field
-          v-model="credentials.email"
-          hide-details
+          v-model="email.value.value"
+          :error-messages="email.errorMessage.value"
           label="Email"
           placeholder="Digite o seu email de cadastro"
           type="email"
@@ -35,8 +60,8 @@ const handleSubmit = () => {
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="credentials.password"
-          hide-details
+          v-model="password.value.value"
+          :error-messages="password.errorMessage.value"
           label="Senha"
           placeholder="A senha deve conter números e letras"
           type="password"
@@ -45,8 +70,8 @@ const handleSubmit = () => {
       </v-col>
       <v-col>
         <v-text-field
-          v-model="credentials.passwordConfirm"
-          hide-details
+          v-model="passwordConfirm.value.value"
+          :error-messages="passwordConfirm.errorMessage.value"
           label="Confirme"
           placeholder="A senha deve conter números e letras"
           type="password"
@@ -57,6 +82,7 @@ const handleSubmit = () => {
         <v-btn
           block
           color="primary"
+          :disabled="!meta.valid"
           :loading="isPending"
           type="submit"
           >Cadastrar</v-btn

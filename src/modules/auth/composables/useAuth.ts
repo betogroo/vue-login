@@ -12,6 +12,7 @@ const useAuth = () => {
   const signup = async (credentials: Credentials) => {
     try {
       const { email, password, passwordConfirm } = credentials
+      //const { email, password } = credentials
       error.value = null
       isPending.value = true
       await delay()
