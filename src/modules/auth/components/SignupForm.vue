@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate'
-import { object, z } from 'zod'
-import { toTypedSchema } from '@vee-validate/zod'
+import { validationSchema } from '../types'
 
 interface Props {
   isPending?: boolean
@@ -14,30 +13,13 @@ const emit = defineEmits<{
   signup: [values: any]
 }>()
 
-const validationSchema = toTypedSchema(
-  object({
-    email: z.string().min(1, 'Campo obrigatório').email('Email inválido'),
-    password: z
-      .string()
-      .min(1, 'Campo obrigatório')
-      .min(6, 'No mínimo 6 dígitos'),
-    passwordConfirm: z
-      .string()
-      .min(1, 'Campo obrigatório')
-      .min(6, 'No mínimo 6 dígitos'),
-  }).refine((data) => data.password === data.passwordConfirm, {
-    message: 'As senhas não coincidem',
-    path: ['passwordConfirm'],
-  }),
-)
-
 const { handleSubmit, meta, values } = useForm({
   validationSchema,
 })
 
 const email = useField('email', validationSchema)
 const password = useField('password', validationSchema)
-const passwordConfirm = useField('passwordConfirm', validationSchema)
+const passwordConfirm = useField('passwordConfirm', validationSchema) || ''
 
 const onSubmit = handleSubmit(async () => {
   console.log(values)
