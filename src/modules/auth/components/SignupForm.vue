@@ -19,7 +19,7 @@ const { handleSubmit, meta, values } = useForm<Credentials>({
 
 const email = useField('email', validationSchema)
 const password = useField('password', validationSchema)
-const passwordConfirm = useField('passwordConfirm', validationSchema) || ''
+const passwordConfirm = useField('passwordConfirm', validationSchema)
 
 const onSubmit = handleSubmit(async () => {
   console.log(values)
