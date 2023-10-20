@@ -1,6 +1,8 @@
-import type { AuthUser } from '@supabase/supabase-js'
 import { object, z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
+
+export type { AuthUser } from '@supabase/supabase-js'
+export type Credentials = z.infer<typeof CredentialsSchema>
 
 export const CredentialsSchema = object({
   email: z.string().min(1, 'Campo obrigatório').email('Email inválido'),
@@ -20,6 +22,4 @@ export const CredentialsSchema = object({
 
 export const validationSchema = toTypedSchema(CredentialsSchema)
 
-export type Credentials = z.infer<typeof CredentialsSchema>
-
-export { AuthUser }
+//export { AuthUser }
