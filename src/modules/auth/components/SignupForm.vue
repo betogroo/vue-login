@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate'
-import { validationSchema, Credentials } from '../types'
+import { validationSignupSchema, Credentials } from '../types'
 
 interface Props {
   isPending?: boolean
@@ -14,12 +14,12 @@ const emit = defineEmits<{
 }>()
 
 const { handleSubmit, meta, values } = useForm<Credentials>({
-  validationSchema,
+  validationSchema: validationSignupSchema,
 })
 
-const email = useField('email', validationSchema)
-const password = useField('password', validationSchema)
-const passwordConfirm = useField('passwordConfirm', validationSchema)
+const email = useField('email', validationSignupSchema)
+const password = useField('password', validationSignupSchema)
+const passwordConfirm = useField('passwordConfirm', validationSignupSchema)
 
 const onSubmit = handleSubmit(async () => {
   console.log(values)
