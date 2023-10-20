@@ -3,9 +3,14 @@
   <v-container class="d-flex justify-center fill-height">
     <v-responsive
       class="text-center"
-      max-width="250"
+      max-width="600"
     >
       <h1 class="text-center text-h1">HOME PAGE</h1>
+      <v-btn
+        color="red"
+        :to="{ name: 'RestrictView' }"
+        >Ir para página restrita</v-btn
+      >
     </v-responsive>
   </v-container>
 </template>
