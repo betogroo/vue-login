@@ -1,26 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Credentials } from '../types/Auth'
+import { useField, useForm } from 'vee-validate'
+import { Credentials, validationSignupSchema } from '../types/Auth'
+interface Props {
+  isPending?: boolean
+}
+withDefaults(defineProps<Props>(), {
+  isPending: false,
+})
 const emit = defineEmits<{
   signup: [credentials: Credentials]
 }>()
-const credentials = ref<Credentials>({
-  email: '',
-  password: '',
-  passwordConfirm: '',
+
+const { values, handleSubmit, meta } = useForm<Credentials>({
+  validationSchema: validationSignupSchema,
 })
-const handleSubmit = () => {
-  emit('signup', credentials.value)
-}
+const email = useField('email', validationSignupSchema)
+const password = useField('password', validationSignupSchema)
+const passwordConfirm = useField('passwordConfirm', validationSignupSchema)
+
+const onSubmit = handleSubmit(async () => {
+  emit('signup', values)
+})
 </script>
 
 <template>
-  <v-form @submit.prevent="handleSubmit">
+  <v-form @submit.prevent="onSubmit">
     <v-row>
       <v-col cols="12">
         <v-text-field
-          v-model="credentials.email"
-          hide-details
+          v-model="email.value.value"
+          density="compact"
+          :error-messages="email.errorMessage.value"
           label="Email"
           placeholder="Digite o seu email de cadastro"
           type="email"
@@ -29,8 +39,9 @@ const handleSubmit = () => {
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="credentials.password"
-          hide-details
+          v-model="password.value.value"
+          density="compact"
+          :error-messages="password.errorMessage.value"
           label="Senha"
           placeholder="A senha deve conter números e letras"
           type="password"
@@ -39,8 +50,9 @@ const handleSubmit = () => {
       </v-col>
       <v-col>
         <v-text-field
-          v-model="credentials.passwordConfirm"
-          hide-details
+          v-model="passwordConfirm.value.value"
+          density="compact"
+          :error-messages="passwordConfirm.errorMessage.value"
           label="Confirme"
           placeholder="A senha deve conter números e letras"
           type="password"
@@ -51,6 +63,7 @@ const handleSubmit = () => {
         <v-btn
           block
           color="primary"
+          :disabled="!meta.valid"
           type="submit"
           >Cadastrar</v-btn
         >

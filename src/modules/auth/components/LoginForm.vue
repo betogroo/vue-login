@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Credentials, validationLoginSchema } from '../types/Auth'
 import { useField, useForm } from 'vee-validate'
-import { ref } from 'vue'
 interface Props {
   isPending?: boolean
 }
