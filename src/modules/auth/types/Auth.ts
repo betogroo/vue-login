@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 
 export const LoginSchema = z.object({
-  email: z.string().min(1, 'O email é obrigatório').email('EmailInválido'),
+  email: z.string().min(1, 'O email é obrigatório').email('Email Inválido'),
   password: z
     .string()
     .min(1, 'A senha é obrigatória')

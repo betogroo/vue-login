@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Credentials } from '../types/Auth'
+import { Credentials, validationLoginSchema } from '../types/Auth'
+import { useField, useForm } from 'vee-validate'
 import { ref } from 'vue'
 interface Props {
   isPending?: boolean
@@ -11,26 +12,30 @@ withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   login: [credentials: Credentials]
 }>()
-const credentials = ref<Credentials>({
-  email: '',
-  password: '',
+
+const { values, handleSubmit, meta } = useForm<Credentials>({
+  validationSchema: validationLoginSchema,
 })
 
-const handleSubmit = () => {
-  emit('login', credentials.value)
-}
+const email = useField('email', validationLoginSchema)
+const password = useField('password', validationLoginSchema)
+
+const onSubmit = handleSubmit(async () => {
+  emit('login', values)
+})
 </script>
 
 <template>
   <v-form
     :disabled="isPending"
-    @submit.prevent="handleSubmit"
+    @submit.prevent="onSubmit"
   >
     <v-row>
       <v-col cols="12">
         <v-text-field
-          v-model="credentials!.email"
-          hide-details
+          v-model="email.value.value"
+          density="compact"
+          :error-messages="email.errorMessage.value"
           label="Email"
           placeholder="Digite o seu email de cadastro"
           type="email"
@@ -39,8 +44,9 @@ const handleSubmit = () => {
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="credentials!.password"
-          hide-details
+          v-model="password.value.value"
+          density="compact"
+          :error-messages="password.errorMessage.value"
           label="Senha"
           placeholder="A senha deve conter números e letras"
           type="password"
@@ -51,6 +57,7 @@ const handleSubmit = () => {
         <v-btn
           block
           color="primary"
+          :disabled="!meta.valid"
           type="submit"
           >Login</v-btn
         >
