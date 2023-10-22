@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate'
 import { Credentials, validationSignupSchema } from '../types/Auth'
+
 interface Props {
   isPending?: boolean
 }
 withDefaults(defineProps<Props>(), {
   isPending: false,
 })
+
 const emit = defineEmits<{
-  signup: [credentials: Credentials]
+  signup: [values: Credentials]
 }>()
 
 const { values, handleSubmit, meta } = useForm<Credentials>({
   validationSchema: validationSignupSchema,
 })
+
 const email = useField('email', validationSignupSchema)
 const password = useField('password', validationSignupSchema)
 const passwordConfirm = useField('passwordConfirm', validationSignupSchema)

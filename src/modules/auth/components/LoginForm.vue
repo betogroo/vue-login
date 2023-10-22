@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Credentials, validationLoginSchema } from '../types/Auth'
 import { useField, useForm } from 'vee-validate'
+
 interface Props {
   isPending?: boolean
 }
@@ -20,6 +21,7 @@ const email = useField('email', validationLoginSchema)
 const password = useField('password', validationLoginSchema)
 
 const onSubmit = handleSubmit(async () => {
+
   emit('login', values)
 })
 </script>
@@ -33,6 +35,7 @@ const onSubmit = handleSubmit(async () => {
       <v-col cols="12">
         <v-text-field
           v-model="email.value.value"
+
           density="compact"
           :error-messages="email.errorMessage.value"
           label="Email"

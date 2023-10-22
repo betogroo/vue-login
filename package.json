@@ -1,6 +1,6 @@
 {
-  "name": "vue-scaffold",
-  "version": "0.0.0",
+  "name": "vue-login",
+  "version": "0.1.7",
   "private": true,
   "scripts": {
     "dev": "vite",
