@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { Credentials, validationLoginSchema } from '../types/Auth'
 import { useField, useForm } from 'vee-validate'
-import { validationLoginSchema, Credentials } from '../types'
+
 interface Props {
   isPending?: boolean
 }
@@ -12,11 +13,7 @@ const emit = defineEmits<{
   login: [credentials: Credentials]
 }>()
 
-const {
-  handleSubmit,
-  meta,
-  values: formData,
-} = useForm<Credentials>({
+const { values, handleSubmit, meta } = useForm<Credentials>({
   validationSchema: validationLoginSchema,
 })
 
@@ -24,7 +21,8 @@ const email = useField('email', validationLoginSchema)
 const password = useField('password', validationLoginSchema)
 
 const onSubmit = handleSubmit(async () => {
-  emit('login', formData)
+
+  emit('login', values)
 })
 </script>
 
@@ -37,6 +35,8 @@ const onSubmit = handleSubmit(async () => {
       <v-col cols="12">
         <v-text-field
           v-model="email.value.value"
+
+          density="compact"
           :error-messages="email.errorMessage.value"
           label="Email"
           placeholder="Digite o seu email de cadastro"
@@ -47,6 +47,7 @@ const onSubmit = handleSubmit(async () => {
       <v-col cols="12">
         <v-text-field
           v-model="password.value.value"
+          density="compact"
           :error-messages="password.errorMessage.value"
           label="Senha"
           placeholder="A senha deve conter números e letras"

@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { SignupForm } from '../components'
-import type { Credentials } from '../types'
-import { useAuth } from '../composables'
-const { signup: _signup, isPending, error } = useAuth()
-const signup = async (credentials: Credentials) => {
-  await _signup(credentials)
+import type { Credentials } from '../types/Auth'
+const signup = (credentials: Credentials) => {
+  console.log(credentials)
 }
 </script>
 
@@ -18,23 +16,7 @@ const signup = async (credentials: Credentials) => {
       <template #title>
         <div class="text-center text-h4 pb-2">Signup</div>
       </template>
-      <SignupForm
-        :is-pending="isPending"
-        @signup="(value) => signup(value)"
-      />
-      <v-alert
-        v-if="error"
-        border="start"
-        class="d-flex align-center mt-2"
-        prominent
-        type="error"
-      >
-        <template #prepend>
-          <v-icon>mdi-alert-circle-outline</v-icon>
-        </template>
-        <template #title><span class="text-h5">Erro</span></template>
-        <template #text>{{ error?.toString() }}</template>
-      </v-alert>
+      <SignupForm @signup="(value) => signup(value)" />
     </v-card>
   </v-container>
 </template>

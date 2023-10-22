@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate'
-import { validationSignupSchema, Credentials } from '../types'
+import { Credentials, validationSignupSchema } from '../types/Auth'
 
 interface Props {
   isPending?: boolean
@@ -13,7 +13,7 @@ const emit = defineEmits<{
   signup: [values: Credentials]
 }>()
 
-const { handleSubmit, meta, values } = useForm<Credentials>({
+const { values, handleSubmit, meta } = useForm<Credentials>({
   validationSchema: validationSignupSchema,
 })
 
@@ -22,7 +22,6 @@ const password = useField('password', validationSignupSchema)
 const passwordConfirm = useField('passwordConfirm', validationSignupSchema)
 
 const onSubmit = handleSubmit(async () => {
-  console.log(values)
   emit('signup', values)
 })
 </script>
@@ -33,6 +32,7 @@ const onSubmit = handleSubmit(async () => {
       <v-col cols="12">
         <v-text-field
           v-model="email.value.value"
+          density="compact"
           :error-messages="email.errorMessage.value"
           label="Email"
           placeholder="Digite o seu email de cadastro"
@@ -43,6 +43,7 @@ const onSubmit = handleSubmit(async () => {
       <v-col cols="12">
         <v-text-field
           v-model="password.value.value"
+          density="compact"
           :error-messages="password.errorMessage.value"
           label="Senha"
           placeholder="A senha deve conter números e letras"
@@ -53,6 +54,7 @@ const onSubmit = handleSubmit(async () => {
       <v-col>
         <v-text-field
           v-model="passwordConfirm.value.value"
+          density="compact"
           :error-messages="passwordConfirm.errorMessage.value"
           label="Confirme"
           placeholder="A senha deve conter números e letras"
@@ -65,7 +67,6 @@ const onSubmit = handleSubmit(async () => {
           block
           color="primary"
           :disabled="!meta.valid"
-          :loading="isPending"
           type="submit"
           >Cadastrar</v-btn
         >
