@@ -27,3 +27,4 @@ export const validationLoginSchema = toTypedSchema(LoginSchema)
 export const validationSignupSchema = toTypedSchema(SignupSchema)
 
 export type Credentials = z.infer<typeof SignupSchema>
+export type { AuthUser } from '@supabase/supabase-js'

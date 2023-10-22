@@ -1,0 +1,36 @@
+import { ref } from 'vue'
+import { supabase } from '@/plugins/supabase'
+import { Credentials, AuthUser } from '../types/Auth'
+import { useHelpers } from '@/shared/composables'
+const { delay } = useHelpers()
+
+const error = ref<Error | null | string>(null)
+const user = ref<AuthUser | undefined | null>(null)
+const isPending = ref(false)
+
+const useAuth = () => {
+  const signup = async (credentials: Credentials) => {
+    try {
+      const { email, password, passwordConfirm } = credentials
+      error.value = null
+      isPending.value = true
+      await delay()
+      const { data, error: err } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      if (err) throw err
+      user.value = data.user
+      return data.user
+    } catch (err) {
+      const e = err as Error
+      error.value = e.message
+      console.log(error)
+    } finally {
+      isPending.value = false
+    }
+  }
+  return { isPending, error, signup, user }
+}
+
+export default useAuth
