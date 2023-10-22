@@ -18,6 +18,10 @@ export const SignupSchema = z
       .optional(),
   })
   .merge(LoginSchema)
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'As senhas devem ser idênticas',
+    path: ['passwordConfirm'],
+  })
 
 export const validationLoginSchema = toTypedSchema(LoginSchema)
 export const validationSignupSchema = toTypedSchema(SignupSchema)
