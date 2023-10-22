@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Credentials } from '../types'
+import { Credentials } from '../types/Auth'
 import { ref } from 'vue'
 interface Props {
   isPending?: boolean

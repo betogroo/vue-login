@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LoginForm } from '../components'
-import type { Credentials } from '../types'
+import type { Credentials } from '../types/Auth'
 const login = (value: Credentials) => {
   console.log(value)
 }

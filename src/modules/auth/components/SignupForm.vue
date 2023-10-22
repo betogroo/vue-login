@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Credentials } from '../types'
+import type { Credentials } from '../types/Auth'
 const emit = defineEmits<{
   signup: [credentials: Credentials]
 }>()
