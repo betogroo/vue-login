@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
 
 export const LoginSchema = z.object({
   email: z.string().min(1, 'O email é obrigatório').email('EmailInválido'),
@@ -17,5 +18,8 @@ export const SignupSchema = z
       .optional(),
   })
   .merge(LoginSchema)
+
+export const validationLoginSchema = toTypedSchema(LoginSchema)
+export const validationSignupSchema = toTypedSchema(SignupSchema)
 
 export type Credentials = z.infer<typeof SignupSchema>
