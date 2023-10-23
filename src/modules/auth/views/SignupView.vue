@@ -2,11 +2,13 @@
 import { SignupForm } from '../components'
 import type { Credentials } from '../types/Auth'
 import { useAuth } from '../composables'
+import { useRouter } from 'vue-router'
 const { signup, isPending, error } = useAuth()
+const router = useRouter()
 
 const handleSignup = async (credentials: Credentials) => {
-  await signup(credentials).then((data) => {
-    console.log(data)
+  await signup(credentials).then(() => {
+    router.push({ name: 'RestrictView' })
   })
 }
 </script>
