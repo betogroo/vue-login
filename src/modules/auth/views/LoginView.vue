@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { LoginForm } from '../components'
+import { useRouter } from 'vue-router'
 import type { Credentials } from '../types/Auth'
 import { useAuth } from '../composables'
 const { login, isPending, error } = useAuth()
+const router = useRouter()
 
 const handleLogin = async (credentials: Credentials) => {
-  await login(credentials)
+  await login(credentials).then(() => {
+    router.push({ name: 'HomeView' })
+  })
 }
 </script>
 
