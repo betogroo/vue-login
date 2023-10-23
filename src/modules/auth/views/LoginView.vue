@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { LoginForm } from '../components'
-import type { Credentials } from '../types/Auth'
-const login = (value: Credentials) => {
-  console.log(value)
+import type { Credentials } from '../types'
+import { useAuth } from '../composables'
+const { login, isPending, error } = useAuth()
+
+const handleLogin = async (credentials: Credentials) => {
+  await login(credentials)
 }
 </script>
 
@@ -16,7 +19,24 @@ const login = (value: Credentials) => {
       <template #title>
         <div class="text-center text-h4 pb-2">Login</div>
       </template>
-      <LoginForm @login="(value) => login(value)" />
+      <LoginForm
+        :is-pending="isPending"
+        @login="(credentials) => handleLogin(credentials)"
+      />
+      <v-alert
+        v-if="error"
+        border="start"
+        class="d-flex align-center mt-2"
+        closable
+        prominent
+        type="error"
+      >
+        <template #prepend>
+          <v-icon>mdi-alert-circle-outline</v-icon>
+        </template>
+        <template #title><span class="text-h5">Erro</span></template>
+        <template #text>{{ error?.toString() }}</template>
+      </v-alert>
     </v-card>
   </v-container>
 </template>

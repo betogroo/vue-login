@@ -58,6 +58,7 @@ const onSubmit = handleSubmit(async () => {
           block
           color="primary"
           :disabled="!meta.valid"
+          :loading="isPending"
           type="submit"
           >Login</v-btn
         >

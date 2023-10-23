@@ -23,7 +23,7 @@ const handleSignup = async (credentials: Credentials) => {
       </template>
       <SignupForm
         :is-pending="isPending"
-        @signup="(value) => handleSignup(value)"
+        @signup="(credentials) => signup(credentials)"
       />
       <v-alert
         v-if="error"
