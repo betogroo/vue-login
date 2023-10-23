@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { version as vuetifyVersion } from 'vuetify'
 import { version as vueVersion } from 'vue'
-import { useMainStore } from '../store/useMainStore'
 </script>
 <template>
   <v-container class="fill-height">
