@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LoginForm } from '../components'
-import type { Credentials } from '../types'
+import type { Credentials } from '../types/Auth'
 import { useAuth } from '../composables'
 const { login, isPending, error } = useAuth()
 
