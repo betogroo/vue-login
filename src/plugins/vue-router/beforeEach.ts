@@ -1,6 +1,8 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { APP_TITLE } from '@/config'
-const user = false
+import { useAuth } from '@/modules/auth/composables'
+const { getUser, isLogged } = useAuth()
+await getUser()
 
 export default (
   to: RouteLocationNormalized,
@@ -9,7 +11,7 @@ export default (
 ) => {
   document.title = `${APP_TITLE} - ${to.meta.title}`
   if (!to.meta.requiresAuth) {
-    if ((to.name === 'LoginView' || to.name === 'SignupView') && user) {
+    if ((to.name === 'LoginView' || to.name === 'SignupView') && isLogged()) {
       console.log(to.name, ' Está logado, nao precisa logar')
       next({ name: 'HomeView' })
     } else {
@@ -18,7 +20,7 @@ export default (
     }
   } else {
     console.log(to.name, ' Precisa de login')
-    if (!user) {
+    if (!isLogged()) {
       console.log(to.name, ' Não está logado, vai para login')
       next({ name: 'LoginView' })
     } else {

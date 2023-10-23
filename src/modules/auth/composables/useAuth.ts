@@ -67,7 +67,36 @@ const useAuth = () => {
       isPending.value = false
     }
   }
-  return { user, isPending, error, signup, login, logout }
+
+  const getUser = async () => {
+    try {
+      error.value = null
+      isPending.value = true
+      await delay(1)
+      const { data, error: err } = await supabase.auth.getUser()
+      if (err) throw err
+      if (data.user) user.value = data.user
+    } catch (err) {
+      const e = err as Error
+      console.log(e.message)
+    } finally {
+      isPending.value = false
+    }
+  }
+  const isLogged = () => {
+    return !!user.value
+  }
+
+  return {
+    user,
+    isPending,
+    error,
+    signup,
+    login,
+    logout,
+    getUser,
+    isLogged,
+  }
 }
 
 export default useAuth
