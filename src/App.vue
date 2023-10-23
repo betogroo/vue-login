@@ -7,7 +7,10 @@ const route = useRoute()
   <v-app>
     <AppBar v-if="!route.meta.hideAppBar" />
     <v-main>
-      <RouterView />
+      <Suspense>
+        <RouterView />
+        <template #fallback>...</template>
+      </Suspense>
     </v-main>
   </v-app>
 </template>
