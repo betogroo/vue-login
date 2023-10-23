@@ -1,5 +1,18 @@
 <script setup lang="ts">
 import { APP_TITLE } from '@/config'
+import type { AuthUser } from '@supabase/supabase-js'
+interface Props {
+  isPending: boolean
+  user: AuthUser | undefined | null
+}
+withDefaults(defineProps<Props>(), {
+  isPending: false,
+})
+
+const emit = defineEmits(['logout'])
+const handleLogout = async () => {
+  emit('logout')
+}
 </script>
 <template>
   <v-app-bar
@@ -14,17 +27,21 @@ import { APP_TITLE } from '@/config'
       >
     </v-app-bar-title>
     <div class="ma-3">
-      <RouterLink
-        class="text-white text-decoration-none"
+      <v-btn
+        icon="mdi-home"
         :to="{ name: 'HomeView' }"
-        >Home</RouterLink
-      >
-      |
-      <RouterLink
-        class="text-white text-decoration-none"
+        variant="text"
+      />
+      <v-btn
+        icon="mdi-information"
         :to="{ name: 'AboutView' }"
-        >About</RouterLink
-      >
+      />
+      <v-btn
+        v-if="user"
+        icon="mdi-logout"
+        :loading="isPending"
+        @click="handleLogout"
+      />
     </div>
   </v-app-bar>
 </template>

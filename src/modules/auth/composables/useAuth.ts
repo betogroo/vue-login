@@ -73,9 +73,11 @@ const useAuth = () => {
       error.value = null
       isPending.value = true
       await delay(1)
-      const { data, error: err } = await supabase.auth.getUser()
+      const { data, error: err } = await supabase.auth.getSession()
       if (err) throw err
-      if (data.user) user.value = data.user
+      if (!data.session) return
+      console.log(data)
+      if (data.session.user) user.value = data.session.user
     } catch (err) {
       const e = err as Error
       console.log(e.message)
