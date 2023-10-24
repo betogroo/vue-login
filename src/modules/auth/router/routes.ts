@@ -31,6 +31,15 @@ const routes: CustomRouteRecordRaw[] = [
       title: 'Restrict',
     },
   },
+  {
+    path: '/profile',
+    name: 'ProfileView',
+    component: () => import('../views/ProfileView.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Profile',
+    },
+  },
 ]
 
 export default routes
