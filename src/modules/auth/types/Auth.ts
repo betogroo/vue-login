@@ -1,12 +1,18 @@
 import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 
+// default value to fast tests
 export const LoginSchema = z.object({
-  email: z.string().min(1, 'O email é obrigatório').email('Email Inválido'),
+  email: z
+    .string()
+    .min(1, 'O email é obrigatório')
+    .email('Email Inválido')
+    .default('luizhumberto@gmail.com'),
   password: z
     .string()
     .min(1, 'A senha é obrigatória')
-    .min(6, 'A senha deve ter no mínimo 6 dígitos'),
+    .min(6, 'A senha deve ter no mínimo 6 dígitos')
+    .default('123456'),
 })
 
 export const SignupSchema = z
@@ -23,8 +29,17 @@ export const SignupSchema = z
     path: ['passwordConfirm'],
   })
 
+export const UserSchema = z.object({
+  id: z.string(),
+  email: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  last_sign_in_at: z.string(),
+})
+
 export const validationLoginSchema = toTypedSchema(LoginSchema)
 export const validationSignupSchema = toTypedSchema(SignupSchema)
 
 export type Credentials = z.infer<typeof SignupSchema>
+export type User = z.infer<typeof UserSchema> | null
 export type { AuthUser } from '@supabase/supabase-js'

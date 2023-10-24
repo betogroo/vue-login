@@ -1,14 +1,15 @@
 import { ref } from 'vue'
 import { supabase } from '@/plugins/supabase'
-import { Credentials, AuthUser } from '../types/Auth'
+import { Credentials } from '../types/Auth'
 import { useHelpers } from '@/shared/composables'
+import { useAuthStore } from '../store/useAuthStore'
 const { delay } = useHelpers()
 
 const error = ref<Error | null | string>(null)
-const user = ref<AuthUser | undefined | null>(null)
 const isPending = ref(false)
 
 const useAuth = () => {
+  const store = useAuthStore()
   const signup = async (credentials: Credentials) => {
     try {
       const { email, password } = credentials
@@ -20,7 +21,7 @@ const useAuth = () => {
         password,
       })
       if (err) throw err
-      user.value = data.user
+      store.setUser(data.user)
       return data.user
     } catch (err) {
       const e = err as Error
@@ -42,7 +43,8 @@ const useAuth = () => {
         password,
       })
       if (err) throw err
-      user.value = data.user
+      store.setUser(data.user)
+      return data.user
     } catch (err) {
       const e = err as Error
       error.value = e.message
@@ -57,7 +59,7 @@ const useAuth = () => {
       isPending.value = true
       await delay()
       const { error: err } = await supabase.auth.signOut()
-      user.value = null
+      store.user = null
       if (err) throw err
     } catch (err) {
       const e = err as Error
@@ -75,9 +77,11 @@ const useAuth = () => {
       await delay(1)
       const { data, error: err } = await supabase.auth.getSession()
       if (err) throw err
-      if (!data.session) return
-      console.log(data)
-      if (data.session.user) user.value = data.session.user
+      if (!data.session) {
+        store.user = null
+        return
+      }
+      if (data.session.user) store.setUser(data.session.user)
     } catch (err) {
       const e = err as Error
       console.log(e.message)
@@ -86,11 +90,10 @@ const useAuth = () => {
     }
   }
   const isLogged = () => {
-    return !!user.value
+    return !!store.user
   }
 
   return {
-    user,
     isPending,
     error,
     signup,
