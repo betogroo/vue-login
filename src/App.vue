@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { useAuthStore } from './modules/auth/store/useAuthStore'
 import { AppBar } from '@/shared/components'
 import { useAuth } from './modules/auth/composables'
 import { useRoute, useRouter } from 'vue-router'
-const { getUser, user, logout, isPending: logoutPending } = useAuth()
+const { logout, isPending: logoutPending } = useAuth()
 const route = useRoute()
 const router = useRouter()
-onMounted(async () => {
-  await getUser()
-})
+const store = useAuthStore()
+
 const handleLogout = async () => {
   await logout().then(() => {
     router.push({ name: 'LoginView' })
@@ -20,7 +19,7 @@ const handleLogout = async () => {
     <AppBar
       v-if="!route.meta.hideAppBar"
       :is-pending="logoutPending"
-      :user="user"
+      :user="store.user"
       @logout="handleLogout"
     />
     <v-main>

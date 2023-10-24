@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useAuth } from '../composables'
-const { getUser, user } = useAuth()
-await getUser()
+import { useAuthStore } from '../store/useAuthStore'
+const store = useAuthStore()
 </script>
 
 <template>
   <div>Restrict</div>
-  <pre v-if="user">{{ JSON.stringify(user, undefined, 2) }}</pre>
+  <pre v-if="store.user">{{ JSON.stringify(store.user, undefined, 2) }}</pre>
 </template>
