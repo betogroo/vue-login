@@ -7,9 +7,13 @@ const { login, isPending, error } = useAuth()
 const router = useRouter()
 
 const handleLogin = async (credentials: Credentials) => {
-  await login(credentials).then(() => {
-    router.push({ name: 'RestrictView' })
-  })
+  await login(credentials)
+    .then((data) => {
+      if (data) router.push({ name: 'RestrictView' })
+    })
+    .catch((e) => {
+      console.log(e)
+    })
 }
 </script>
 

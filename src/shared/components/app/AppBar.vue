@@ -3,7 +3,7 @@ import { APP_TITLE } from '@/config'
 import type { User } from '@/modules/auth/types/Auth'
 interface Props {
   isPending: boolean
-  user: User | undefined | null
+  user: User
 }
 withDefaults(defineProps<Props>(), {
   isPending: false,
