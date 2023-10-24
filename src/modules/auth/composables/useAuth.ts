@@ -7,6 +7,7 @@ const { delay } = useHelpers()
 
 const error = ref<Error | null | string>(null)
 const isPending = ref(false)
+
 const useAuth = () => {
   const store = useAuthStore()
   const signup = async (credentials: Credentials) => {
@@ -21,7 +22,6 @@ const useAuth = () => {
       })
       if (err) throw err
       store.setUser(data.user)
-      //store.user = data.user
       return data.user
     } catch (err) {
       const e = err as Error
@@ -44,7 +44,7 @@ const useAuth = () => {
       })
       if (err) throw err
       store.setUser(data.user)
-      //store.user = data.user
+      return data.user
     } catch (err) {
       const e = err as Error
       error.value = e.message
@@ -81,8 +81,7 @@ const useAuth = () => {
         store.user = null
         return
       }
-      if (data.session.user) store.setUser(data.session.user) //store.user = data.session.user
-      console.log(data.session.user)
+      if (data.session.user) store.setUser(data.session.user)
     } catch (err) {
       const e = err as Error
       console.log(e.message)
