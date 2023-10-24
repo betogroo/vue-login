@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { APP_TITLE } from '@/config'
-import type { AuthUser } from '@supabase/supabase-js'
+import type { User } from '@/modules/auth/types/Auth'
 interface Props {
   isPending: boolean
-  user: AuthUser | undefined | null
+  user: User | undefined | null
 }
 withDefaults(defineProps<Props>(), {
   isPending: false,

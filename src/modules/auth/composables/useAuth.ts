@@ -20,7 +20,8 @@ const useAuth = () => {
         password,
       })
       if (err) throw err
-      store.user = data.user
+      store.setUser(data.user)
+      //store.user = data.user
       return data.user
     } catch (err) {
       const e = err as Error
@@ -42,7 +43,8 @@ const useAuth = () => {
         password,
       })
       if (err) throw err
-      store.user = data.user
+      store.setUser(data.user)
+      //store.user = data.user
     } catch (err) {
       const e = err as Error
       error.value = e.message
@@ -79,7 +81,8 @@ const useAuth = () => {
         store.user = null
         return
       }
-      if (data.session.user) store.user = data.session.user
+      if (data.session.user) store.setUser(data.session.user) //store.user = data.session.user
+      console.log(data.session.user)
     } catch (err) {
       const e = err as Error
       console.log(e.message)
