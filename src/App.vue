@@ -19,7 +19,7 @@ const handleLogout = async () => {
     <AppBar
       v-if="!route.meta.hideAppBar"
       :is-pending="logoutPending"
-      :user="store.user"
+      :user="store.user!"
       @logout="handleLogout"
     />
     <v-main>

@@ -1,18 +1,10 @@
 import { ref } from 'vue'
-import { z } from 'zod'
 import { supabase } from '@/plugins/supabase'
+import { ProfileSchema, type Profile } from '../types/Profile'
+import { useHelpers } from '@/shared/composables'
 
-const ProfileSchema = z.object({
-  id: z.string().nullish(),
-  username: z.string().nullish(),
-  website: z.string().nullish(),
-  avatar_url: z.string().optional().nullish(),
-  full_name: z.string().nullish(),
-})
-
-export type Profile = z.infer<typeof ProfileSchema> | null
-const profile = ref<Profile>(null)
-
+const profile = ref<Profile>()
+const { delay } = useHelpers()
 const useProfile = () => {
   const isPending = ref(false)
   const error = ref<string | null>(null)
@@ -27,7 +19,7 @@ const useProfile = () => {
         status,
       } = await supabase
         .from('profiles')
-        .select('username, website, avatar_url, full_name')
+        .select('id, username, website, avatar_url, full_name')
         .eq('id', id)
         .single()
       if (err && status !== 406) throw err
@@ -43,7 +35,9 @@ const useProfile = () => {
 
   const updateProfile = async (updates: Profile) => {
     try {
+      error.value = null
       isPending.value = true
+      await delay()
       const { error: err } = await supabase.from('profiles').upsert(updates)
       if (err) throw error
     } catch (err) {
