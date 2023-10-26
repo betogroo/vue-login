@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ProfileForm } from '../components'
+import { ProfileForm, ProfileContainer } from '../components'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
@@ -8,7 +8,7 @@ import { useProfile } from '../composables'
 const store = useAuthStore()
 const profileStore = useProfileStore()
 const { user } = storeToRefs(store)
-const { profile, fullProfile } = storeToRefs(profileStore)
+const { profile, userProfile } = storeToRefs(profileStore)
 const { getProfile, updateProfile, isPending } = useProfile()
 if (user.value) await getProfile(user.value.id)
 
@@ -19,8 +19,8 @@ const handleSubmit = async (value: ProfileCasting) => {
 </script>
 
 <template>
-  <div>Profile</div>
-  <pre v-if="profile">{{ JSON.stringify(fullProfile, undefined, 2) }}</pre>
+  <ProfileContainer :user-profile="userProfile" />
+  <pre v-if="profile">{{ JSON.stringify(userProfile, undefined, 2) }}</pre>
 
   <ProfileForm
     :is-pending="isPending"

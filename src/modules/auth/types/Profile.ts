@@ -18,13 +18,15 @@ export const ProfileSchema = z.object({
 
 export const ProfileCastingSchema = z.object({
   id: z.string().nullish(),
-  username: z.string().nullish(),
+  username: z.string().toLowerCase().nullish(),
   website: z.string().nullish(),
   avatar_url: z.string().nullish(),
   full_name: z.string().nullish(),
 })
 
-export const UserProfileSchema = UserSchema.merge(ProfileSchema)
+export const UserProfileSchema = UserSchema.merge(
+  ProfileSchema.partial(),
+).partial()
 
 export const validationProfileSchema = toTypedSchema(ProfileSchema)
 
