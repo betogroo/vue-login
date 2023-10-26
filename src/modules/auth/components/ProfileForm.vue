@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { User } from '../types/Auth'
-import {
-  type ProfileCasting,
-  type Profile,
-  validationProfileSchema,
-} from '../types/Profile'
+import { type ProfileCasting, validationProfileSchema } from '../types/Profile'
 import { useField, useForm } from 'vee-validate'
 
 interface Props {
@@ -36,7 +32,6 @@ const onSubmit = handleSubmit(async () => {
 </script>
 
 <template>
-  <pre v-if="profile">{{ JSON.stringify(meta, undefined, 2) }}</pre>
   <v-form @submit.prevent="onSubmit">
     <v-row>
       <v-col cols="12">

@@ -2,11 +2,14 @@
 import { ProfileForm } from '../components'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
+import { useProfileStore } from '../store/useProfileStore'
 import type { ProfileCasting } from '../types/Profile'
 import { useProfile } from '../composables'
 const store = useAuthStore()
+const profileStore = useProfileStore()
 const { user } = storeToRefs(store)
-const { getProfile, profile, updateProfile, isPending } = useProfile()
+const { profile, fullProfile } = storeToRefs(profileStore)
+const { getProfile, updateProfile, isPending } = useProfile()
 if (user.value) await getProfile(user.value.id)
 
 const handleSubmit = async (value: ProfileCasting) => {
@@ -17,8 +20,7 @@ const handleSubmit = async (value: ProfileCasting) => {
 
 <template>
   <div>Profile</div>
-  <pre v-if="profile">{{ JSON.stringify(user, undefined, 2) }}</pre>
-  <pre v-if="profile">{{ JSON.stringify(profile, undefined, 2) }}</pre>
+  <pre v-if="profile">{{ JSON.stringify(fullProfile, undefined, 2) }}</pre>
 
   <ProfileForm
     :is-pending="isPending"
