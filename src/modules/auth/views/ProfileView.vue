@@ -17,6 +17,7 @@ const handleSubmit = async (value: ProfileCasting) => {
 
 <template>
   <div>Profile</div>
+  <pre v-if="profile">{{ JSON.stringify(user, undefined, 2) }}</pre>
   <pre v-if="profile">{{ JSON.stringify(profile, undefined, 2) }}</pre>
 
   <ProfileForm

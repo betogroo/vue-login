@@ -36,6 +36,7 @@ const onSubmit = handleSubmit(async () => {
 </script>
 
 <template>
+  <pre v-if="profile">{{ JSON.stringify(meta, undefined, 2) }}</pre>
   <v-form @submit.prevent="onSubmit">
     <v-row>
       <v-col cols="12">
@@ -70,6 +71,7 @@ const onSubmit = handleSubmit(async () => {
         <v-btn
           block
           color="primary"
+          :disabled="!meta.valid"
           :loading="isPending"
           type="submit"
           >Atualizar</v-btn
