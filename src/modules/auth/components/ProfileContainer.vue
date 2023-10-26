@@ -28,6 +28,8 @@ const { userProfile } = toRefs(props)
             density="compact"
             :href="userProfile.website?.toString()"
             nav
+            tag="a"
+            variant="plain"
             >{{ userProfile.website }}</v-list-item
           >
         </ProfileInfor>
