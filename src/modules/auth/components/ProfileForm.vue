@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { User } from '../types/Auth'
-import { Profile, validationProfileSchema } from '../types/Profile'
+import {
+  type ProfileCasting,
+  type Profile,
+  validationProfileSchema,
+} from '../types/Profile'
 import { useField, useForm } from 'vee-validate'
 
 interface Props {
   user: User
-  profile: Profile
+  profile: ProfileCasting
   isPending?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   isPending: false,
 })
 const emit = defineEmits<{
-  updateProfile: [values: Profile]
+  updateProfile: [values: ProfileCasting]
 }>()
 
-const { values, handleSubmit, meta } = useForm<Profile>({
+const { values, handleSubmit, meta } = useForm<ProfileCasting>({
   validationSchema: validationProfileSchema,
   initialValues: props.profile,
 })
@@ -42,13 +46,25 @@ const onSubmit = handleSubmit(async () => {
         />
       </v-col>
       <v-col cols="12">
-        <v-text-field v-model="website.value.value" />
+        <v-text-field
+          v-model="website.value.value"
+          dirty
+          :error-messages="website.errorMessage.value"
+        />
       </v-col>
       <v-col cols="12">
-        <v-text-field v-model="avatar_url.value.value" />
+        <v-text-field
+          v-model="avatar_url.value.value"
+          dirty
+          :error-messages="avatar_url.errorMessage.value"
+        />
       </v-col>
       <v-col cols="12">
-        <v-text-field v-model="full_name.value.value" />
+        <v-text-field
+          v-model="full_name.value.value"
+          dirty
+          :error-messages="full_name.errorMessage.value"
+        />
       </v-col>
       <v-col>
         <v-btn
