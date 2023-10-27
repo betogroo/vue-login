@@ -15,6 +15,7 @@ export const ProfileSchema = z.object({
     .string()
     .min(6, 'O Nome Completo deve conter no mínimo 6 caracteres')
     .nullish(),
+  updated_at: z.string().nullish(),
 })
 
 export const UserProfileSchema = UserSchema.merge(

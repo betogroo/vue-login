@@ -14,7 +14,12 @@ if (user.value) await getProfile(user.value.id)
 
 const handleSubmit = async (value: Profile) => {
   if (!user.value) return
-  const updates = { ...value, id: user.value.id }
+  const date = new Date()
+  const updates = {
+    ...value,
+    id: user.value.id,
+    updated_at: date.toISOString(),
+  }
   await updateProfile(updates)
 }
 </script>
