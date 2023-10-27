@@ -2,24 +2,14 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useAuthStore } from './useAuthStore'
-import {
-  ProfileCastingSchema,
-  Profile,
-  ProfileCasting,
-  UserProfile,
-} from '../types/Profile'
+import { Profile, UserProfile } from '../types/Profile'
 
 export const useProfileStore = defineStore('profile', () => {
   const auth = useAuthStore()
-  const profile = ref<Profile | ProfileCasting>()
-
-  const setProfile = (value: ProfileCasting) => {
-    const parsedData = ProfileCastingSchema.parse(value)
-    profile.value = parsedData
-  }
+  const profile = ref<Profile>()
 
   const userProfile = computed<UserProfile>(
     () => <UserProfile>{ ...profile.value, ...auth.user },
   )
-  return { profile, setProfile, userProfile }
+  return { profile, userProfile }
 })

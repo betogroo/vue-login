@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import { supabase } from '@/plugins/supabase'
-import { ProfileCasting } from '../types/Profile'
+import { Profile, ProfileSchema } from '../types/Profile'
 import { useHelpers } from '@/shared/composables'
 import { useProfileStore } from '../store/useProfileStore'
 
-const profile = ref<ProfileCasting>()
+const profile = ref<Profile>()
 const { delay } = useHelpers()
 const useProfile = () => {
   const store = useProfileStore()
@@ -25,7 +25,10 @@ const useProfile = () => {
         .eq('id', id)
         .single()
       if (err && status !== 406) throw err
-      if (data) store.setProfile(data)
+      if (data) {
+        const parsedData = ProfileSchema.parse(data)
+        store.profile = parsedData
+      }
     } catch (err) {
       const e = err as Error
       error.value = e.message
@@ -35,14 +38,15 @@ const useProfile = () => {
     }
   }
 
-  const updateProfile = async (updates: ProfileCasting) => {
+  const updateProfile = async (updates: Profile) => {
     try {
       error.value = null
       isPending.value = true
       await delay()
-      const { error: err } = await supabase.from('profiles').upsert(updates)
+      const parsedData = ProfileSchema.parse(updates)
+      const { error: err } = await supabase.from('profiles').upsert(parsedData)
       if (err) throw error
-      store.setProfile(updates)
+      store.profile = parsedData
     } catch (err) {
       const e = err as Error
       error.value = e.message

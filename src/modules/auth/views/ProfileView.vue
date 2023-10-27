@@ -3,7 +3,7 @@ import { ProfileForm, ProfileContainer } from '../components'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
-import type { ProfileCasting } from '../types/Profile'
+import type { Profile } from '../types/Profile'
 import { useProfile } from '../composables'
 const store = useAuthStore()
 const profileStore = useProfileStore()
@@ -12,7 +12,7 @@ const { profile, userProfile } = storeToRefs(profileStore)
 const { getProfile, updateProfile, isPending } = useProfile()
 if (user.value) await getProfile(user.value.id)
 
-const handleSubmit = async (value: ProfileCasting) => {
+const handleSubmit = async (value: Profile) => {
   if (!user.value) return
   const updates = { ...value, id: user.value.id }
   await updateProfile(updates)

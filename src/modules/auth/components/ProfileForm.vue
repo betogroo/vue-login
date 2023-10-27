@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { User } from '../types/Auth'
-import { type ProfileCasting, validationProfileSchema } from '../types/Profile'
+import { type Profile, validationProfileSchema } from '../types/Profile'
 import { useField, useForm } from 'vee-validate'
 
 interface Props {
   user: User
-  profile: ProfileCasting
+  profile: Profile
   isPending?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   isPending: false,
 })
 const emit = defineEmits<{
-  updateProfile: [values: ProfileCasting]
+  updateProfile: [values: Profile]
 }>()
 
 const { values, handleSubmit, meta, handleReset, resetField } =
-  useForm<ProfileCasting>({
+  useForm<Profile>({
     validationSchema: validationProfileSchema,
     initialValues: props.profile,
   })
