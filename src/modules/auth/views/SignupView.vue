@@ -8,7 +8,7 @@ const router = useRouter()
 
 const handleSignup = async (credentials: Credentials) => {
   await signup(credentials).then(() => {
-    router.push({ name: 'RestrictView' })
+    router.push({ name: 'ProfileView' })
   })
 }
 </script>
