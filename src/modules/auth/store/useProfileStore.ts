@@ -18,9 +18,8 @@ export const useProfileStore = defineStore('profile', () => {
     profile.value = parsedData
   }
 
-  const userProfile = computed<UserProfile | any>(() => {
-    const res = { ...profile.value, ...auth.user }
-    return res
-  })
+  const userProfile = computed<UserProfile>(
+    () => <UserProfile>{ ...profile.value, ...auth.user },
+  )
   return { profile, setProfile, userProfile }
 })
