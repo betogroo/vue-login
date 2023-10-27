@@ -23,15 +23,6 @@ const routes: CustomRouteRecordRaw[] = [
     },
   },
   {
-    path: '/restrict',
-    name: 'RestrictView',
-    component: () => import('../views/RestrictView.vue'),
-    meta: {
-      requiresAuth: true,
-      title: 'Restrict',
-    },
-  },
-  {
     path: '/profile',
     name: 'ProfileView',
     component: () => import('../views/ProfileView.vue'),
