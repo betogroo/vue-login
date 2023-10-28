@@ -18,9 +18,7 @@ export const ProfileSchema = z.object({
   updated_at: z.string().nullish(),
 })
 
-export const UserProfileSchema = UserSchema.merge(
-  ProfileSchema.partial(),
-).partial()
+export const UserProfileSchema = UserSchema.merge(ProfileSchema)
 
 export const validationProfileSchema = toTypedSchema(ProfileSchema)
 

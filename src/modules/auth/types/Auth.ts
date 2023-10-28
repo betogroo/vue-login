@@ -6,6 +6,7 @@ export const LoginSchema = z.object({
   email: z
     .string()
     .min(1, 'O email é obrigatório')
+    .toLowerCase()
     .email('Email Inválido')
     .default('luizhumberto@gmail.com'),
   password: z
@@ -30,8 +31,8 @@ export const SignupSchema = z
   })
 
 export const UserSchema = z.object({
-  id: z.string(),
-  email: z.string(),
+  id: z.string().uuid(),
+  email: z.string().email(),
   created_at: z.string(),
   updated_at: z.string(),
   last_sign_in_at: z.string(),
