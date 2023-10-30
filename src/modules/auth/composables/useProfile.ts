@@ -43,7 +43,7 @@ const useProfile = () => {
       await delay()
       const parsedData = ProfileSchema.parse(updates)
       const { error: err } = await supabase.from('profiles').upsert(parsedData)
-      if (err) throw error
+      if (err) throw err
       store.profile = parsedData
     } catch (err) {
       error.value = handleError(err)
