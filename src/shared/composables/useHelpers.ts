@@ -1,4 +1,16 @@
-import { AuthError } from '@supabase/supabase-js'
+import { z } from 'zod'
+
+export const ErrorSchema = z.object({
+  message: z.string(),
+  status: z.string().or(z.number()).nullish(),
+  code: z.string().or(z.number()).nullish(),
+  stack: z.string().nullish(),
+  name: z.string().nullish(),
+  details: z.string().nullish(),
+  hint: z.string().nullish(),
+})
+
+export type MyError = z.infer<typeof ErrorSchema>
 
 const useHelpers = () => {
   const fetchData = (key: string) => {
@@ -17,8 +29,8 @@ const useHelpers = () => {
   }
 
   const handleError = (err: unknown) => {
-    const e = err as AuthError
-    console.log(e.message, e.status, e.stack)
+    const e = ErrorSchema.parse(err)
+    console.log(e)
     return e.message
   }
 
