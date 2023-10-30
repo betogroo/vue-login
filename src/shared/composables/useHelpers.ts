@@ -1,3 +1,5 @@
+import { AuthError } from '@supabase/supabase-js'
+
 const useHelpers = () => {
   const fetchData = (key: string) => {
     const data = JSON.parse(localStorage.getItem(key) || '{}')
@@ -15,8 +17,8 @@ const useHelpers = () => {
   }
 
   const handleError = (err: unknown) => {
-    const e = err as Error
-    console.log(e.message)
+    const e = err as AuthError
+    console.log(e.message, e.status, e.stack)
     return e.message
   }
 

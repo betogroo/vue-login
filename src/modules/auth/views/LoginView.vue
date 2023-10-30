@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LoginForm } from '../components'
+import { AlertError, LoginForm } from '../components'
 import { useRouter } from 'vue-router'
 import type { Credentials } from '../types/Auth'
 import { useAuth } from '../composables'
@@ -31,20 +31,7 @@ const handleLogin = async (credentials: Credentials) => {
         :is-pending="isPending"
         @login="(credentials) => handleLogin(credentials)"
       />
-      <v-alert
-        v-if="error"
-        border="start"
-        class="d-flex align-center mt-2"
-        closable
-        prominent
-        type="error"
-      >
-        <template #prepend>
-          <v-icon>mdi-alert-circle-outline</v-icon>
-        </template>
-        <template #title><span class="text-h5">Erro</span></template>
-        <template #text>{{ error?.toString() }}</template>
-      </v-alert>
+      <AlertError :error="error" />
     </v-card>
   </v-container>
 </template>

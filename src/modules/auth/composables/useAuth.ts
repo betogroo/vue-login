@@ -3,9 +3,10 @@ import { supabase } from '@/plugins/supabase'
 import { Credentials } from '../types/Auth'
 import { useHelpers } from '@/shared/composables'
 import { useAuthStore } from '../store/useAuthStore'
+import { AuthError } from '@supabase/supabase-js'
 const { delay, handleError } = useHelpers()
 
-const error = ref<Error | null | string>(null)
+const error = ref<AuthError | null | string>(null)
 const isPending = ref(false)
 
 const useAuth = () => {
