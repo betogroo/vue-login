@@ -5,7 +5,7 @@ import { useHelpers } from '@/shared/composables'
 import { useProfileStore } from '../store/useProfileStore'
 
 const profile = ref<Profile>()
-const { delay } = useHelpers()
+const { delay, handleError } = useHelpers()
 const useProfile = () => {
   const store = useProfileStore()
   const isPending = ref(false)
@@ -30,9 +30,7 @@ const useProfile = () => {
         store.profile = parsedData
       }
     } catch (err) {
-      const e = err as Error
-      error.value = e.message
-      console.log(error.value)
+      error.value = handleError(err)
     } finally {
       isPending.value = false
     }
@@ -48,9 +46,7 @@ const useProfile = () => {
       if (err) throw error
       store.profile = parsedData
     } catch (err) {
-      const e = err as Error
-      error.value = e.message
-      console.log(error.value)
+      error.value = handleError(err)
     } finally {
       isPending.value = false
     }

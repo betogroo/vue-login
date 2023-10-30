@@ -14,6 +14,12 @@ const useHelpers = () => {
     return localStorage.removeItem(key)
   }
 
+  const handleError = (err: unknown) => {
+    const e = err as Error
+    console.log(e.message)
+    return e.message
+  }
+
   const delay = (
     amount = 800,
     msg: boolean | string = false,
@@ -55,14 +61,15 @@ const useHelpers = () => {
     return item.length % 2 !== 0 && index === item.length - 1 ? 12 : 6
   }
   return {
-    fetchData,
     existingData,
     deleteItem,
     delay,
+    fetchData,
+    handleError,
     generateRandomColor,
+    lastColumnGrid,
     localCurrency,
     timestampToDate,
-    lastColumnGrid,
   }
 }
 

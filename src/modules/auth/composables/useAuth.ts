@@ -3,7 +3,7 @@ import { supabase } from '@/plugins/supabase'
 import { Credentials } from '../types/Auth'
 import { useHelpers } from '@/shared/composables'
 import { useAuthStore } from '../store/useAuthStore'
-const { delay } = useHelpers()
+const { delay, handleError } = useHelpers()
 
 const error = ref<Error | null | string>(null)
 const isPending = ref(false)
@@ -24,9 +24,7 @@ const useAuth = () => {
       store.setUser(data.user)
       return data.user
     } catch (err) {
-      const e = err as Error
-      error.value = e.message
-      console.log(error)
+      error.value = handleError(err)
     } finally {
       isPending.value = false
     }
@@ -46,8 +44,7 @@ const useAuth = () => {
       store.setUser(data.user)
       return data.user
     } catch (err) {
-      const e = err as Error
-      error.value = e.message
+      error.value = handleError(err)
     } finally {
       isPending.value = false
     }
@@ -62,9 +59,7 @@ const useAuth = () => {
       store.user = null
       if (err) throw err
     } catch (err) {
-      const e = err as Error
-      error.value = e.message
-      console.log(e)
+      error.value = handleError(err)
     } finally {
       isPending.value = false
     }
@@ -83,8 +78,7 @@ const useAuth = () => {
       }
       if (data.session.user) store.setUser(data.session.user)
     } catch (err) {
-      const e = err as Error
-      console.log(e.message)
+      error.value = handleError(err)
     } finally {
       isPending.value = false
     }
