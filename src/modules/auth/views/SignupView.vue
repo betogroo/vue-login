@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SignupForm } from '../components'
+import { AlertError, SignupForm } from '../components'
 import type { Credentials } from '../types/Auth'
 import { useAuth } from '../composables'
 import { useRouter } from 'vue-router'
@@ -7,9 +7,13 @@ const { signup, isPending, error } = useAuth()
 const router = useRouter()
 
 const handleSignup = async (credentials: Credentials) => {
-  await signup(credentials).then(() => {
-    router.push({ name: 'RestrictView' })
-  })
+  await signup(credentials)
+    .then((data) => {
+      if (data) router.push({ name: 'RestrictView' })
+    })
+    .catch((e) => {
+      console.log(e)
+    })
 }
 </script>
 
@@ -27,19 +31,7 @@ const handleSignup = async (credentials: Credentials) => {
         :is-pending="isPending"
         @signup="(credentials) => handleSignup(credentials)"
       />
-      <v-alert
-        v-if="error"
-        border="start"
-        class="d-flex align-center mt-2"
-        prominent
-        type="error"
-      >
-        <template #prepend>
-          <v-icon>mdi-alert-circle-outline</v-icon>
-        </template>
-        <template #title><span class="text-h5">Erro</span></template>
-        <template #text>{{ error?.toString() }}</template>
-      </v-alert>
+      <AlertError :error="error" />
     </v-card>
   </v-container>
 </template>
