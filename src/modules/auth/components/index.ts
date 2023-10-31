@@ -1,4 +1,5 @@
-import SignupForm from './SignupForm.vue'
+import AlertError from './AlertError.vue'
 import LoginForm from './LoginForm.vue'
+import SignupForm from './SignupForm.vue'
 
-export { LoginForm, SignupForm }
+export { AlertError, LoginForm, SignupForm }
