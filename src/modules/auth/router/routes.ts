@@ -23,12 +23,12 @@ const routes: CustomRouteRecordRaw[] = [
     },
   },
   {
-    path: '/restrict',
-    name: 'RestrictView',
-    component: () => import('../views/RestrictView.vue'),
+    path: '/profile',
+    name: 'ProfileView',
+    component: () => import('../views/ProfileView.vue'),
     meta: {
       requiresAuth: true,
-      title: 'Restrict',
+      title: 'Profile',
     },
   },
 ]

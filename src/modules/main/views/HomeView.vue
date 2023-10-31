@@ -15,8 +15,8 @@ const { user } = storeToRefs(store)
         <v-col cols="12">
           <v-btn
             :color="user ? 'success' : 'error'"
-            :to="{ name: 'RestrictView' }"
-            >Ir para página restrita</v-btn
+            :to="{ name: 'ProfileView' }"
+            >Ver seu Perfil</v-btn
           >
         </v-col>
       </v-row>

@@ -9,7 +9,7 @@ const router = useRouter()
 const handleLogin = async (credentials: Credentials) => {
   await login(credentials)
     .then((data) => {
-      if (data) router.push({ name: 'RestrictView' })
+      if (data) router.push({ name: 'ProfileView' })
     })
     .catch((e) => {
       console.log(e)
