@@ -36,12 +36,17 @@ const handleLogout = async () => {
         icon="mdi-information"
         :to="{ name: 'AboutView' }"
       />
-      <v-btn
-        v-if="user"
-        icon="mdi-logout"
-        :loading="isPending"
-        @click="handleLogout"
-      />
+      <template v-if="user">
+        <v-btn
+          icon="mdi-account"
+          :to="{ name: 'ProfileView' }"
+        />
+        <v-btn
+          icon="mdi-logout"
+          :loading="isPending"
+          @click="handleLogout"
+        />
+      </template>
     </div>
   </v-app-bar>
 </template>

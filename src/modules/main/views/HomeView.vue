@@ -11,15 +11,6 @@ const { user } = storeToRefs(store)
       max-width="600"
     >
       <h1 class="text-center text-h1">HOME PAGE</h1>
-      <v-row>
-        <v-col cols="12">
-          <v-btn
-            :color="user ? 'success' : 'error'"
-            :to="{ name: 'ProfileView' }"
-            >Ver seu Perfil</v-btn
-          >
-        </v-col>
-      </v-row>
     </v-responsive>
   </v-container>
 </template>
