@@ -1,2 +1,3 @@
 import useAuth from './useAuth'
-export { useAuth }
+import useProfile from './useProfile'
+export { useAuth, useProfile }

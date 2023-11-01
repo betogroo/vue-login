@@ -1,3 +1,15 @@
+import { z } from 'zod'
+
+export const ErrorSchema = z.object({
+  message: z.string(),
+  status: z.string().or(z.number()).nullish(),
+  code: z.string().or(z.number()).nullish(),
+  stack: z.string().nullish(),
+  name: z.string().nullish(),
+  details: z.string().nullish(),
+  hint: z.string().nullish(),
+})
+
 const useHelpers = () => {
   const fetchData = (key: string) => {
     const data = JSON.parse(localStorage.getItem(key) || '{}')
@@ -54,15 +66,22 @@ const useHelpers = () => {
   const lastColumnGrid = <T>(item: T[], index: number) => {
     return item.length % 2 !== 0 && index === item.length - 1 ? 12 : 6
   }
+
+  const handleError = (err: unknown) => {
+    const e = ErrorSchema.parse(err)
+    console.log(e)
+    return e.message
+  }
   return {
-    fetchData,
     existingData,
-    deleteItem,
     delay,
+    deleteItem,
+    fetchData,
     generateRandomColor,
+    handleError,
+    lastColumnGrid,
     localCurrency,
     timestampToDate,
-    lastColumnGrid,
   }
 }
 
