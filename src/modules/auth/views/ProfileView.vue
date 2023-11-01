@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { useAuthStore } from '../store/useAuthStore'
-import { useProfile } from '../composables'
 import { ProfileContainer } from '../components'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '../store/useAuthStore'
+import { useProfileStore } from '../store/useProfileStore'
+import { useProfile } from '../composables'
 const store = useAuthStore()
-const { profile, getProfile } = useProfile()
-getProfile(store.user!.id)
+const profileStore = useProfileStore()
+const { user } = storeToRefs(store)
+const { userProfile } = storeToRefs(profileStore)
+const { getProfile } = useProfile()
+if (user.value) await getProfile(user.value.id)
 </script>
 
 <template>
-  <div>{{ profile }}</div>
-  <pre v-if="store.user">{{ JSON.stringify(store.user, undefined, 2) }}</pre>
-  <ProfileContainer :user-id="profile" />
+  <v-container class="justify-center">
+    <ProfileContainer :user-profile="userProfile" />
+  </v-container>
 </template>
