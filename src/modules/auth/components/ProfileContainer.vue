@@ -1,46 +1,99 @@
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import { ref, toRefs } from 'vue'
 import type { UserProfile } from '../types/Profile'
-import { ProfileInfo } from '../components'
+import { useHelpers } from '@/shared/composables'
 interface Props {
   userProfile: UserProfile
 }
 const props = defineProps<Props>()
-
+const { avatarInitials } = useHelpers()
 const { userProfile } = toRefs(props)
+
+const profileForm = ref(false)
+const toggleProfileForm = () => {
+  profileForm.value = !profileForm.value
+}
 </script>
 
 <template>
-  <v-card
-    class="pa-2 ma-1"
-    variant="outlined"
-  >
-    <h1 class="text-h5 text-left">{{ userProfile.full_name }}</h1>
-    <h1 class="text-h6 font-weight-light">{{ userProfile.email }}</h1>
-    <v-card-text>
-      <ProfileInfo title="Nome">{{ userProfile.full_name }}</ProfileInfo>
-      <ProfileInfo title="Email">{{ userProfile.email }}</ProfileInfo>
-      <ProfileInfo title="Nome de Usuário">{{
-        userProfile.username
-      }}</ProfileInfo>
-      <v-divider></v-divider>
-      <ProfileInfo title="Website"
-        ><v-list-item
-          class="pa-0"
-          density="compact"
-          :href="userProfile.website?.toString()"
-          nav
-          tag="a"
-          variant="plain"
-          >{{ userProfile.website }}</v-list-item
+  <v-container>
+    <v-row>
+      <v-col class="text-center">
+        <v-avatar
+          color="red"
+          size="256"
         >
-      </ProfileInfo>
-      <ProfileInfo title="Data de Cadastro">{{
-        new Date(userProfile.created_at!).toLocaleDateString()
-      }}</ProfileInfo>
-      <ProfileInfo title="Último Login">{{
-        new Date(userProfile.last_sign_in_at!).toLocaleString()
-      }}</ProfileInfo>
-    </v-card-text>
-  </v-card>
+          <span class="text-h1">{{
+            userProfile.full_name ? avatarInitials(userProfile.full_name) : 'VL'
+          }}</span>
+        </v-avatar>
+      </v-col>
+      <v-col cols="12">
+        <v-card
+          v-if="!profileForm"
+          class="ma-1 pa-1"
+          variant="text"
+        >
+          <div class="text-h6">{{ userProfile.full_name }}</div>
+          <div class="text-subtitle-1">{{ userProfile.username }}</div>
+          <v-btn
+            block
+            class="mt-3"
+            color="primary"
+            variant="outlined"
+            @click="toggleProfileForm"
+            >Editar Perfil</v-btn
+          >
+          <v-sheet class="d-flex align-center my-2">
+            <div class="pr-3"><v-icon>mdi-at</v-icon></div>
+            <div>{{ userProfile.email }}</div>
+          </v-sheet>
+          <v-sheet class="d-flex align-center my-2">
+            <div class="pr-3"><v-icon>mdi-link-variant</v-icon></div>
+            <div>{{ userProfile.website }}</div>
+          </v-sheet>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card
+          v-if="profileForm"
+          class="ma-1 pa-1"
+          height="400"
+          variant="text"
+        >
+          <v-text-field
+            density="compact"
+            label="Nome"
+            variant="outlined"
+          >
+          </v-text-field>
+          <v-text-field
+            density="compact"
+            placeholder="Username"
+            prepend-icon="mdi-account-tie"
+            variant="outlined"
+          />
+          <v-text-field
+            density="compact"
+            placeholder="Website"
+            prepend-icon="mdi-link-variant"
+            variant="outlined"
+          />
+          <v-btn
+            color="success"
+            density="comfortable"
+            >Salvar</v-btn
+          >
+          <v-btn
+            class="ml-3"
+            color="red"
+            density="comfortable"
+            variant="outlined"
+            @click="toggleProfileForm"
+            >Cancelar</v-btn
+          >
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
