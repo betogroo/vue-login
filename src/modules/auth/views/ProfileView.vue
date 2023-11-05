@@ -5,15 +5,26 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
 import { useProfile } from '../composables'
+import { Profile } from '../types/Profile'
 const store = useAuthStore()
 const profileStore = useProfileStore()
 const profileForm = ref(false)
 const { user } = storeToRefs(store)
-const { userProfile } = storeToRefs(profileStore)
-const { getProfile } = useProfile()
+const { profile, userProfile } = storeToRefs(profileStore)
+const { getProfile, updateProfile, isPending } = useProfile()
+
 if (user.value) await getProfile(user.value.id)
-const handleSubmit = () => {
-  console.log('submit')
+
+const handleSubmit = async (value: Profile) => {
+  if (!user.value) return
+  const date = new Date()
+  const updates = {
+    ...value,
+    id: user.value.id,
+    updated_at: date.toISOString(),
+  }
+  await updateProfile(updates)
+  toggleForm()
 }
 const toggleForm = () => {
   profileForm.value = !profileForm.value
@@ -37,8 +48,11 @@ const toggleForm = () => {
       />
       <ProfileForm
         v-if="profileForm"
-        @handle-submit="handleSubmit"
+        :is-pending="isPending"
+        :profile="profile!"
+        :user="user"
         @toggle-form="toggleForm"
+        @update-profile="(value) => handleSubmit(value)"
       />
     </v-responsive>
   </v-container>
