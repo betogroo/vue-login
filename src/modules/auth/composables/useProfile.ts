@@ -4,8 +4,9 @@ import { Profile, ProfileSchema } from '../types/Profile'
 import { useHelpers } from '@/shared/composables'
 import { useProfileStore } from '../store/useProfileStore'
 
+const { delay, handleError } = useHelpers()
+
 const profile = ref<Profile>()
-const { handleError } = useHelpers()
 const useProfile = () => {
   const store = useProfileStore()
   const isPending = ref(false)
@@ -36,7 +37,23 @@ const useProfile = () => {
     }
   }
 
-  return { isPending, error, profile, getProfile }
+  const updateProfile = async (updates: Profile) => {
+    try {
+      error.value = null
+      isPending.value = true
+      await delay()
+      const parsedData = ProfileSchema.parse(updates)
+      const { error: err } = await supabase.from('profiles').upsert(parsedData)
+      if (err) throw err
+      store.profile = parsedData
+    } catch (err) {
+      error.value = handleError(err)
+    } finally {
+      isPending.value = false
+    }
+  }
+
+  return { isPending, error, profile, getProfile, updateProfile }
 }
 
 export default useProfile

@@ -17,6 +17,14 @@ const useHelpers = () => {
     return data
   }
 
+  const avatarInitials = (name: string) => {
+    const names = name.trim().split(' ')
+    const firstInitial = names[0][0]
+    const seconstInitial = names[names.length - 1][0]
+    const initials = `${firstInitial}${seconstInitial}`
+    return initials
+  }
+
   const existingData = (key: string) => {
     const data = fetchData(key)
     return data
@@ -73,9 +81,10 @@ const useHelpers = () => {
     return e.message
   }
   return {
-    existingData,
+    avatarInitials,
     delay,
     deleteItem,
+    existingData,
     fetchData,
     generateRandomColor,
     handleError,

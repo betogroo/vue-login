@@ -1,9 +1,4 @@
-<script setup lang="ts">
-import { useAuthStore } from '@/modules/auth/store/useAuthStore'
-import { storeToRefs } from 'pinia'
-const store = useAuthStore()
-const { user } = storeToRefs(store)
-</script>
+<script setup lang="ts"></script>
 <template>
   <v-container class="d-flex justify-center fill-height">
     <v-responsive
