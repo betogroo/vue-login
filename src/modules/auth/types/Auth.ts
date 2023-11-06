@@ -25,7 +25,17 @@ export const SignupSchema = z
     full_name: z
       .string()
       .min(1, 'O nome é obrigatório')
-      .min(3, 'A Nome deve ter no mínimo 3 dígitos'),
+      .min(3, 'A Nome deve ter no mínimo 3 dígitos')
+      .trim()
+      .refine(
+        (data) => {
+          const words = data.split(/\s+/)
+          return words.length >= 2
+        },
+        {
+          message: 'Deve conter pelo menos o nome e sobrenome',
+        },
+      ),
   })
   .merge(LoginSchema)
   .refine((data) => data.password === data.passwordConfirm, {
