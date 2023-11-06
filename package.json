@@ -22,7 +22,7 @@
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
     "vee-validate": "^4.11.8",
-    "vue": "^3.3.7",
+    "vue": "^3.3.8",
     "vue-router": "^4.2.5",
     "vuetify": "^3.3.23",
     "zod": "^3.22.4"
