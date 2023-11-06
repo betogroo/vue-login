@@ -47,6 +47,10 @@ const handleLogout = async () => {
           @click="handleLogout"
         />
       </template>
+      <template v-else>
+        <v-btn :to="{ name: 'LoginView' }">Login</v-btn>
+        <v-btn :to="{ name: 'SignupView' }">Registre-se</v-btn>
+      </template>
     </div>
   </v-app-bar>
 </template>
