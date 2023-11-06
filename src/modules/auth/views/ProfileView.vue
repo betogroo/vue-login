@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ProfileDetails, ProfileForm, ProfileHead } from '../components'
+import {
+  ProfileDetails,
+  ProfileForm,
+  ProfileHead,
+  AlertError,
+} from '../components'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
@@ -11,7 +16,7 @@ const profileStore = useProfileStore()
 const profileForm = ref(false)
 const { user } = storeToRefs(store)
 const { profile, userProfile } = storeToRefs(profileStore)
-const { getProfile, updateProfile, isPending } = useProfile()
+const { getProfile, updateProfile, isPending, error } = useProfile()
 
 if (user.value) await getProfile(user.value.id)
 
@@ -54,6 +59,7 @@ const toggleForm = () => {
         @toggle-form="toggleForm"
         @update-profile="(value) => handleSubmit(value)"
       />
+      <AlertError :error="error" />
     </v-responsive>
   </v-container>
 </template>
