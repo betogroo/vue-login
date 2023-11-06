@@ -3,7 +3,7 @@ import { supabase } from '@/plugins/supabase'
 import { Credentials } from '../types/Auth'
 import { useHelpers } from '@/shared/composables'
 import { useAuthStore } from '../store/useAuthStore'
-const { delay } = useHelpers()
+const { delay, setDefaultUsername } = useHelpers()
 
 const error = ref<Error | null | string>(null)
 const isPending = ref(false)
@@ -22,6 +22,7 @@ const useAuth = () => {
         options: {
           data: {
             full_name,
+            username: setDefaultUsername(full_name),
           },
         },
       })

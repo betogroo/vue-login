@@ -46,7 +46,10 @@ const useProfile = () => {
       const { error: err } = await supabase.from('profiles').upsert(parsedData)
       if (err) throw err
       await supabase.auth.updateUser({
-        data: { full_name: parsedData.full_name },
+        data: {
+          full_name: parsedData.full_name,
+          username: parsedData.username,
+        },
       })
       store.profile = parsedData
     } catch (err) {
