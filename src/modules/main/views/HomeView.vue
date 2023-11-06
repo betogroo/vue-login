@@ -5,7 +5,7 @@
       class="text-center"
       max-width="600"
     >
-      <h1 class="text-center text-h1">HOME PAGE</h1>
+      <h1 class="text-center text-h3">HOME PAGE</h1>
     </v-responsive>
   </v-container>
 </template>
