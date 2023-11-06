@@ -22,6 +22,10 @@ export const SignupSchema = z
       .min(1, 'É necessário confirmar a senha')
       .min(6, 'A confirmação deve ter no mínimo 6 dígitos')
       .optional(),
+    full_name: z
+      .string()
+      .min(1, 'O nome é obrigatório')
+      .min(3, 'A Nome deve ter no mínimo 3 dígitos'),
   })
   .merge(LoginSchema)
   .refine((data) => data.password === data.passwordConfirm, {

@@ -45,6 +45,9 @@ const useProfile = () => {
       const parsedData = ProfileSchema.parse(updates)
       const { error: err } = await supabase.from('profiles').upsert(parsedData)
       if (err) throw err
+      await supabase.auth.updateUser({
+        data: { full_name: parsedData.full_name },
+      })
       store.profile = parsedData
     } catch (err) {
       error.value = handleError(err)

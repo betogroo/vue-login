@@ -17,6 +17,7 @@ const { values, handleSubmit, meta } = useForm<Credentials>({
   validationSchema: validationSignupSchema,
 })
 
+const full_name = useField('full_name', validationSignupSchema)
 const email = useField('email', validationSignupSchema)
 const password = useField('password', validationSignupSchema)
 const passwordConfirm = useField('passwordConfirm', validationSignupSchema)
@@ -29,6 +30,17 @@ const onSubmit = handleSubmit(async () => {
 <template>
   <v-form @submit.prevent="onSubmit">
     <v-row>
+      <v-col cols="12">
+        <v-text-field
+          v-model="full_name.value.value"
+          density="compact"
+          :error-messages="full_name.errorMessage.value"
+          label="Nome"
+          placeholder="Digite o seu nome"
+          type="text"
+          variant="outlined"
+        />
+      </v-col>
       <v-col cols="12">
         <v-text-field
           v-model="email.value.value"
