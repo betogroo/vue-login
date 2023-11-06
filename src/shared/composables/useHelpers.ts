@@ -25,6 +25,13 @@ const useHelpers = () => {
     return initials
   }
 
+  const setDefaultUsername = (name: string) => {
+    const randomNumber = Math.floor(Math.random() * 1000)
+    const names = name.trim().split(' ')
+    const username = `${names[0]}_${names[names.length - 1]}${randomNumber}`
+    return username.toLocaleLowerCase()
+  }
+
   const existingData = (key: string) => {
     const data = fetchData(key)
     return data
@@ -90,6 +97,7 @@ const useHelpers = () => {
     handleError,
     lastColumnGrid,
     localCurrency,
+    setDefaultUsername,
     timestampToDate,
   }
 }
