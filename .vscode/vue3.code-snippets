@@ -132,11 +132,11 @@
     "scope": "javascript,typescript",
     "prefix": "v3-composable",
     "body": [
-      "const $1 = () => {",
+      "const ${TM_FILENAME_BASE} = () => {",
       "\treturn {  }",
       "}",
       "",
-      "export default $1"
+      "export default ${TM_FILENAME_BASE}"
     ]
   },
   "Vue 3 Composable with basic refs ": {
@@ -144,13 +144,13 @@
     "prefix": "v3-composable-refs",
     "body": [
       "import { ref } from 'vue'\n",
-      "const $1 = () => {",
+      "const ${TM_FILENAME_BASE} = () => {",
       "\tconst isPending = ref(false)",
       "\tconst error = ref(null)",
       "\treturn { isPending, error  }",
       "}",
       "",
-      "export default $1"
+      "export default ${TM_FILENAME_BASE}"
     ]
   },
   "HANDLE CLICK": {
