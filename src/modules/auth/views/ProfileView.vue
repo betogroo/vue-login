@@ -5,6 +5,7 @@ import {
   ProfileForm,
   ProfileHead,
   AlertError,
+  ProfileAvatar,
 } from '../components'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
@@ -38,28 +39,24 @@ const toggleForm = () => {
 
 <template>
   <v-container class="justify-center">
-    <v-responsive
-      class="px-3"
-      max-width="412"
-    >
-      <ProfileHead
-        :user-profile="userProfile"
-        @toggle-form="toggleForm"
-      />
-      <ProfileDetails
-        v-if="!profileForm"
-        :user-profile="userProfile"
-        @toggle-form="toggleForm"
-      />
-      <ProfileForm
-        v-if="profileForm"
-        :is-pending="isPending"
-        :profile="profile!"
-        :user="user"
-        @toggle-form="toggleForm"
-        @update-profile="(value) => handleSubmit(value)"
-      />
-      <AlertError :error="error" />
-    </v-responsive>
+    <ProfileAvatar :user-profile="userProfile" />
+    <ProfileHead
+      :user-profile="userProfile"
+      @toggle-form="toggleForm"
+    />
+    <ProfileDetails
+      v-if="!profileForm"
+      :user-profile="userProfile"
+      @toggle-form="toggleForm"
+    />
+    <ProfileForm
+      v-if="profileForm"
+      :is-pending="isPending"
+      :profile="profile!"
+      :user="user"
+      @toggle-form="toggleForm"
+      @update-profile="(value) => handleSubmit(value)"
+    />
+    <AlertError :error="error" />
   </v-container>
 </template>
