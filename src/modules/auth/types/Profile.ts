@@ -10,7 +10,7 @@ export const ProfileSchema = z.object({
     .min(3, 'O Nome de Usuário deve conter no mínimo 3 caracteres')
     .nullish(),
   website: z.string().toLowerCase().url('Digite uma url válida').nullish(),
-  avatar_url: z.string().toLowerCase().url('Digite uma url válida').nullish(),
+  avatar_url: z.string().toLowerCase().nullish(),
   full_name: z
     .string()
     .min(6, 'O Nome Completo deve conter no mínimo 6 caracteres')
