@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { AppFileBtn } from '@/shared/components/'
 import {
   ProfileDetails,
   ProfileForm,
@@ -35,11 +36,19 @@ const handleSubmit = async (value: Profile) => {
 const toggleForm = () => {
   profileForm.value = !profileForm.value
 }
+const handleFile = (evt: Event) => {
+  console.log(evt)
+}
 </script>
 
 <template>
   <v-container class="justify-center">
     <ProfileAvatar :user-profile="userProfile" />
+    <AppFileBtn
+      text="Alterar"
+      @change="handleFile"
+      >Alterar</AppFileBtn
+    >
     <ProfileHead
       :user-profile="userProfile"
       @toggle-form="toggleForm"

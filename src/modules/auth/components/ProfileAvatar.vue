@@ -6,7 +6,7 @@ interface Props {
   userProfile: UserProfile
   img?: string | null
 }
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const { avatarInitials } = useHelpers()
 </script>
