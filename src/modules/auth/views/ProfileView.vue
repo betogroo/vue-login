@@ -11,13 +11,17 @@ import {
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
+import { useAvatarStore } from '../store/useAvatarStore'
 import { useProfile } from '../composables'
 import { Profile } from '../types/Profile'
+import { render } from 'vue'
 const store = useAuthStore()
 const profileStore = useProfileStore()
+const avatarStore = useAvatarStore()
 const profileForm = ref(false)
 const { user } = storeToRefs(store)
 const { profile, userProfile } = storeToRefs(profileStore)
+const { src } = storeToRefs(avatarStore)
 const { getProfile, updateProfile, isPending, error } = useProfile()
 
 if (user.value) await getProfile(user.value.id)
@@ -37,13 +41,24 @@ const toggleForm = () => {
   profileForm.value = !profileForm.value
 }
 const handleFile = (evt: Event) => {
-  console.log(evt)
+  const input = evt.target as HTMLInputElement
+  const file = input.files?.length ? input.files[0] : null
+  if (file) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      avatarStore.src = e.target?.result as string
+    }
+    reader.readAsDataURL(file)
+  }
 }
 </script>
 
 <template>
   <v-container class="justify-center">
-    <ProfileAvatar :user-profile="userProfile" />
+    <ProfileAvatar
+      :img="avatarStore.src"
+      :user-profile="userProfile"
+    />
     <AppFileBtn
       text="Alterar"
       @change="handleFile"
