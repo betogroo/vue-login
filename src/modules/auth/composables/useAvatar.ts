@@ -10,20 +10,33 @@ const useAvatar = () => {
   const isPending = ref(false)
   const error = ref<string | null>(null)
 
-  const updateAvatar = async () => {
-    console.log('Vai salvar a parada')
+  const handleFile = (evt: Event): void => {
+    const input = evt.target as HTMLInputElement
+    const file = input.files?.[0] || null
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const result = e.target?.result
+        if (typeof result === 'string') store.src = result
+      }
+      reader.readAsDataURL(file)
+      store.file = file
+      store.editMode = true
+    }
+  }
+
+  const updateAvatar = async (): Promise<void> => {
     try {
       error.value = null
       isPending.value = true
       if (!store.file) return
       const fileExt = store.file.name.split('.').pop()
-      const filePath = `${Math.random()}.${fileExt}`
-      if (store.file) {
-        const { error: err } = await supabase.storage
-          .from('avatars')
-          .upload(filePath, store.file)
-        if (err) throw err
-      }
+      const filePath = `${Date.now()}.${fileExt}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, store.file)
+      if (uploadError) throw uploadError
       await delay()
       store.editMode = false
     } catch (err) {
@@ -32,7 +45,7 @@ const useAvatar = () => {
       isPending.value = false
     }
   }
-  return { isPending, error, updateAvatar }
+  return { isPending, error, updateAvatar, handleFile }
 }
 
 export default useAvatar

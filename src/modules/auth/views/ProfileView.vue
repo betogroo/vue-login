@@ -22,11 +22,7 @@ const profileForm = ref(false)
 const { user } = storeToRefs(store)
 const { profile, userProfile } = storeToRefs(profileStore)
 const { getProfile, updateProfile, isPending, error } = useProfile()
-const {
-  error: avatarError,
-  isPending: avatarPending,
-  updateAvatar,
-} = useAvatar()
+const { isPending: avatarPending, updateAvatar, handleFile } = useAvatar()
 
 if (user.value) await getProfile(user.value.id)
 
@@ -43,18 +39,6 @@ const handleSubmit = async (value: Profile) => {
 }
 const toggleForm = () => {
   profileForm.value = !profileForm.value
-}
-const handleFile = (evt: Event) => {
-  const input = evt.target as HTMLInputElement
-  avatarStore.file = input.files?.length ? input.files[0] : null
-  if (avatarStore.file) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      avatarStore.src = e.target?.result as string
-    }
-    reader.readAsDataURL(avatarStore.file)
-    avatarStore.editMode = true
-  }
 }
 </script>
 
