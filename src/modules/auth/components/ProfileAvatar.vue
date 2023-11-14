@@ -14,12 +14,14 @@ const { avatarInitials } = useHelpers()
 <template>
   <v-sheet class="d-flex align-center justify-center">
     <v-avatar
-      color="red"
+      color="primary"
       size="256"
+      variant="outlined"
     >
       <template v-if="img">
         <v-img
           alt="John"
+          cover
           :src="img"
         ></v-img>
       </template>
