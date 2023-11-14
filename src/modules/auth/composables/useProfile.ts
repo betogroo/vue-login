@@ -69,9 +69,13 @@ const useProfile = () => {
         .update({ avatar_url, updated_at })
         .eq('id', id)
         .select()
+        .single()
       if (!data) throw err
-      console.log(data)
-      return data
+      const parsedData = ProfileSchema.parse(data)
+      store.profile = parsedData
+      return parsedData
+      //console.log(data)
+      //return data
     } catch (err) {
       error.value = handleError(err)
     } finally {
