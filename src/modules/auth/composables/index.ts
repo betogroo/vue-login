@@ -1,3 +1,4 @@
 import useAuth from './useAuth'
 import useProfile from './useProfile'
-export { useAuth, useProfile }
+import useAvatar from './useAvatar'
+export { useAuth, useAvatar, useProfile }

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { supabase } from '@/plugins/supabase'
-import { useHelpers } from '@/shared/composables'
-const { delay } = useHelpers()
+import { useAvatarStore } from '../store/useAvatarStore'
+const avatarStore = useAvatarStore()
 import { ref } from 'vue'
 import { AppFileBtn } from '@/shared/components/'
 import {
@@ -14,17 +13,20 @@ import {
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
-import { useAvatarStore } from '../store/useAvatarStore'
-import { useProfile } from '../composables'
+import { useProfile, useAvatar } from '../composables'
 import { Profile } from '../types/Profile'
 const store = useAuthStore()
 const profileStore = useProfileStore()
-const avatarStore = useAvatarStore()
+
 const profileForm = ref(false)
 const { user } = storeToRefs(store)
-const { file } = storeToRefs(avatarStore)
 const { profile, userProfile } = storeToRefs(profileStore)
 const { getProfile, updateProfile, isPending, error } = useProfile()
+const {
+  error: avatarError,
+  isPending: avatarPending,
+  updateAvatar,
+} = useAvatar()
 
 if (user.value) await getProfile(user.value.id)
 
@@ -54,30 +56,6 @@ const handleFile = (evt: Event) => {
     avatarStore.editMode = true
   }
 }
-
-const updateAvatar = async () => {
-  console.log('Vai salvar a parada')
-  try {
-    error.value = null
-    isPending.value = true
-    const fileExt = file.value?.name.split('.').pop()
-    const filePath = `${Math.random()}.${fileExt}`
-    if (file.value) {
-      const { error: err } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file.value)
-      if (err) throw err
-    }
-    await delay()
-    avatarStore.editMode = false
-  } catch (err) {
-    const e = err as Error
-    error.value = e.message
-    console.log(e)
-  } finally {
-    isPending.value = false
-  }
-}
 </script>
 
 <template>
@@ -94,7 +72,7 @@ const updateAvatar = async () => {
     >
     <v-btn
       v-else
-      :loading="isPending"
+      :loading="avatarPending"
       @click="updateAvatar"
       >Salvar</v-btn
     >
