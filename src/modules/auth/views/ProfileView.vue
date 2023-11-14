@@ -33,9 +33,11 @@ const {
   isPending: avatarPending,
   updateAvatar: _updateAvatar,
   handleFile,
+  downloadImage,
 } = useAvatar()
 
 if (user.value) await getProfile(user.value.id)
+await downloadImage(profile.value?.avatar_url)
 
 const updateProfile = async (value: Profile) => {
   if (!user.value) return

@@ -10,6 +10,19 @@ const useAvatar = () => {
   const isPending = ref(false)
   const error = ref<string | null>(null)
 
+  const downloadImage = async (avatar_url: string | null | undefined) => {
+    try {
+      if (!avatar_url) return
+      const { data, error: err } = await supabase.storage
+        .from('avatars')
+        .download(avatar_url)
+      if (err) throw err
+      store.src = URL.createObjectURL(data)
+    } catch (err) {
+      error.value = handleError(err)
+    }
+  }
+
   const handleFile = (evt: Event): void => {
     const input = evt.target as HTMLInputElement
     const file = input.files?.[0] || null
@@ -46,7 +59,7 @@ const useAvatar = () => {
       isPending.value = false
     }
   }
-  return { isPending, error, updateAvatar, handleFile }
+  return { isPending, error, updateAvatar, handleFile, downloadImage }
 }
 
 export default useAvatar
