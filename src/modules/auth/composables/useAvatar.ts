@@ -25,20 +25,21 @@ const useAvatar = () => {
     }
   }
 
-  const updateAvatar = async (): Promise<void> => {
+  const updateAvatar = async () => {
     try {
       error.value = null
       isPending.value = true
-      if (!store.file) return
+      if (!store.file) throw new Error('Nenhuma imagem foi selecionada')
       const fileExt = store.file.name.split('.').pop()
       const filePath = `${Date.now()}.${fileExt}`
 
-      const { error: uploadError } = await supabase.storage
+      const { error: uploadError, data } = await supabase.storage
         .from('avatars')
         .upload(filePath, store.file)
       if (uploadError) throw uploadError
       await delay()
       store.editMode = false
+      return data.path
     } catch (err) {
       error.value = handleError(err)
     } finally {

@@ -21,12 +21,23 @@ const profileStore = useProfileStore()
 const profileForm = ref(false)
 const { user } = storeToRefs(store)
 const { profile, userProfile } = storeToRefs(profileStore)
-const { getProfile, updateProfile, isPending, error } = useProfile()
-const { isPending: avatarPending, updateAvatar, handleFile } = useAvatar()
+const {
+  getProfile,
+  updateProfile: _updateProfile,
+  updateAvatarUrl,
+  isPending,
+  error: profileError,
+} = useProfile()
+const {
+  error: avatarError,
+  isPending: avatarPending,
+  updateAvatar: _updateAvatar,
+  handleFile,
+} = useAvatar()
 
 if (user.value) await getProfile(user.value.id)
 
-const handleSubmit = async (value: Profile) => {
+const updateProfile = async (value: Profile) => {
   if (!user.value) return
   const date = new Date()
   const updates = {
@@ -34,11 +45,23 @@ const handleSubmit = async (value: Profile) => {
     id: user.value.id,
     updated_at: date.toISOString(),
   }
-  await updateProfile(updates)
+  await _updateProfile(updates)
   toggleForm()
 }
 const toggleForm = () => {
   profileForm.value = !profileForm.value
+}
+
+const updateAvatar = async (): Promise<void> => {
+  if (!user.value) return
+  try {
+    const filePath = await _updateAvatar()
+    if (!filePath) throw Error('O arquivo não foi selecionado')
+    await updateAvatarUrl(user.value.id, filePath)
+    console.log(filePath)
+  } catch (error) {
+    console.error('Erro ao atualizar o avatar', error)
+  }
 }
 </script>
 
@@ -75,8 +98,8 @@ const toggleForm = () => {
       :profile="profile!"
       :user="user"
       @toggle-form="toggleForm"
-      @update-profile="(value) => handleSubmit(value)"
+      @update-profile="(value) => updateProfile(value)"
     />
-    <AlertError :error="error" />
+    <AlertError :error="profileError || avatarError" />
   </v-container>
 </template>
