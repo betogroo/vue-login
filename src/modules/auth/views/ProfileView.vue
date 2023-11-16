@@ -2,13 +2,13 @@
 import { useAvatarStore } from '../store/useAvatarStore'
 const avatarStore = useAvatarStore()
 import { ref } from 'vue'
-import { AppFileBtn } from '@/shared/components/'
 import {
   ProfileDetails,
   ProfileForm,
   ProfileHead,
   AlertError,
   ProfileAvatar,
+  ProfileAvatarButtons,
 } from '../components'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/useAuthStore'
@@ -73,18 +73,12 @@ const updateAvatar = async (): Promise<void> => {
       :img="avatarStore.src"
       :user-profile="userProfile"
     />
-    <AppFileBtn
-      v-if="!avatarStore.editMode"
-      text="Alterar"
-      @change="handleFile"
-      >Alterar</AppFileBtn
-    >
-    <v-btn
-      v-else
-      :loading="avatarPending"
-      @click="updateAvatar"
-      >Salvar</v-btn
-    >
+    <ProfileAvatarButtons
+      :edit-mode="avatarStore.editMode"
+      :is-pending="avatarPending"
+      @handle-file="handleFile"
+      @update-avatar="updateAvatar"
+    />
     <ProfileHead
       :user-profile="userProfile"
       @toggle-form="toggleForm"
