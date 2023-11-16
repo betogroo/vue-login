@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { useAvatarStore } from '../store/useAvatarStore'
-const avatarStore = useAvatarStore()
+// library imports
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
+// components
 import {
   ProfileDetails,
   ProfileForm,
@@ -10,17 +12,29 @@ import {
   ProfileAvatar,
   ProfileAvatarButtons,
 } from '../components'
-import { storeToRefs } from 'pinia'
+
+// types
+import { Profile } from '../types/Profile'
+
+// store imports
+import { useAvatarStore } from '../store/useAvatarStore'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
-import { useProfile, useAvatar } from '../composables'
-import { Profile } from '../types/Profile'
-const store = useAuthStore()
-const profileStore = useProfileStore()
 
+// composable imports
+import { useProfile, useAvatar } from '../composables'
+
+// store
+const authStore = useAuthStore()
+const profileStore = useProfileStore()
+const avatarStore = useAvatarStore()
+
+// reactive
 const profileForm = ref(false)
-const { user } = storeToRefs(store)
+const { user } = storeToRefs(authStore)
 const { profile, userProfile } = storeToRefs(profileStore)
+
+// composables
 const {
   getProfile,
   updateProfile: _updateProfile,
@@ -36,22 +50,25 @@ const {
   downloadImage,
 } = useAvatar()
 
-if (user.value) await getProfile(user.value.id)
-await downloadImage(profile.value?.avatar_url)
+// methods
+const toggleForm = () => {
+  profileForm.value = !profileForm.value
+}
 
-const updateProfile = async (value: Profile) => {
+const updateProfile = async (profile: Profile) => {
   if (!user.value) return
   const date = new Date()
   const updates = {
-    ...value,
+    ...profile,
     id: user.value.id,
     updated_at: date.toISOString(),
   }
-  await _updateProfile(updates)
-  toggleForm()
-}
-const toggleForm = () => {
-  profileForm.value = !profileForm.value
+  try {
+    await _updateProfile(updates)
+    toggleForm()
+  } catch (error) {
+    console.error('Erro ao atualizar o perfil', error)
+  }
 }
 
 const updateAvatar = async (): Promise<void> => {
@@ -60,11 +77,13 @@ const updateAvatar = async (): Promise<void> => {
     const filePath = await _updateAvatar()
     if (!filePath) throw Error('O arquivo não foi selecionado')
     await updateAvatarUrl(user.value.id, filePath)
-    console.log(filePath)
   } catch (error) {
     console.error('Erro ao atualizar o avatar', error)
   }
 }
+
+if (user.value) await getProfile(user.value.id)
+await downloadImage(profile.value?.avatar_url)
 </script>
 
 <template>
@@ -94,7 +113,7 @@ const updateAvatar = async (): Promise<void> => {
       :profile="profile!"
       :user="user"
       @toggle-form="toggleForm"
-      @update-profile="(value) => updateProfile(value)"
+      @update-profile="(profile) => updateProfile(profile)"
     />
     <AlertError :error="profileError || avatarError" />
   </v-container>
