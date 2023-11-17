@@ -12,24 +12,22 @@ const { avatarInitials } = useHelpers()
 </script>
 
 <template>
-  <v-sheet class="d-flex align-center justify-center">
-    <v-avatar
-      color="primary"
-      size="256"
-      variant="outlined"
-    >
-      <template v-if="img">
-        <v-img
-          alt="John"
-          cover
-          :src="img"
-        ></v-img>
-      </template>
-      <template v-else>
-        <span class="text-h1">{{
-          userProfile.full_name ? avatarInitials(userProfile.full_name) : 'VL'
-        }}</span>
-      </template>
-    </v-avatar>
-  </v-sheet>
+  <v-avatar
+    color="primary"
+    size="256"
+    variant="outlined"
+  >
+    <template v-if="img">
+      <v-img
+        alt="John"
+        cover
+        :src="img"
+      ></v-img>
+    </template>
+    <template v-else>
+      <span class="text-h1">{{
+        userProfile.full_name ? avatarInitials(userProfile.full_name) : 'VL'
+      }}</span>
+    </template>
+  </v-avatar>
 </template>

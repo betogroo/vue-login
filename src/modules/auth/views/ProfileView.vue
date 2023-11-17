@@ -88,16 +88,21 @@ await downloadImage(profile.value?.avatar_url)
 
 <template>
   <v-container class="justify-center">
-    <ProfileAvatar
-      :img="avatarStore.src"
-      :user-profile="userProfile"
-    />
-    <ProfileAvatarButtons
-      :edit-mode="avatarStore.editMode"
-      :is-pending="avatarPending"
-      @handle-file="handleFile"
-      @update-avatar="updateAvatar"
-    />
+    <v-sheet class="d-flex align-center justify-center">
+      <ProfileAvatar
+        :img="avatarStore.src"
+        :user-profile="userProfile"
+      />
+      <div class="ml-n16 mb-n16">
+        <ProfileAvatarButtons
+          class="ma-8"
+          :edit-mode="avatarStore.editMode"
+          :is-pending="avatarPending"
+          @handle-file="handleFile"
+          @update-avatar="updateAvatar"
+        />
+      </div>
+    </v-sheet>
     <ProfileHead
       :user-profile="userProfile"
       @toggle-form="toggleForm"

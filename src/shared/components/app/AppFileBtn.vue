@@ -28,7 +28,6 @@ const uploadAvatar = async (evt: Event) => {
     color="black"
     density="compact"
     max-width="80"
-    variant="outlined"
     @click="handleInputFile"
   >
     <template #default>

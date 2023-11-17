@@ -35,7 +35,6 @@ const updateAvatar = () => {
     density="compact"
     :loading="isPending"
     max-width="80"
-    variant="outlined"
     @click="updateAvatar"
     >Salvar</v-btn
   >
