@@ -95,7 +95,6 @@ await downloadImage(profile.value?.avatar_url)
       />
       <div class="ml-n16 mb-n16">
         <ProfileAvatarButtons
-          class="ma-8"
           :edit-mode="avatarStore.editMode"
           :is-pending="avatarPending"
           @handle-file="handleFile"
