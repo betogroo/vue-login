@@ -10,9 +10,20 @@ import 'vuetify/styles'
 
 // Composables
 import { createVuetify } from 'vuetify'
+import { VBtn } from 'vuetify/components/VBtn'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
+  aliases: {
+    VBtnAvatar: VBtn,
+  },
+  defaults: {
+    VBtnAvatar: {
+      class: ['rounded-xl'],
+      color: 'black',
+      variant: 'flat',
+    },
+  },
   theme: {
     themes: {
       light: {
