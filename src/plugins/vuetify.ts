@@ -19,7 +19,7 @@ export default createVuetify({
   },
   defaults: {
     VBtnAvatar: {
-      class: ['rounded-xl'],
+      class: ['rounded-xl', 'text-none', 'pa-2', 'v-btn--avatar'],
       color: 'black',
       variant: 'flat',
     },
