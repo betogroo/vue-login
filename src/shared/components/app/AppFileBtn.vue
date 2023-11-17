@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 interface Props {
   text?: string
+  icon?: string | false
 }
 withDefaults(defineProps<Props>(), {
   text: 'Arquivo',
@@ -24,18 +25,11 @@ const uploadAvatar = async (evt: Event) => {
 </script>
 
 <template>
-  <v-btn
-    color="black"
-    density="compact"
-    max-width="80"
+  <v-btn-avatar
+    :icon="icon"
     @click="handleInputFile"
   >
-    <template #default>
-      <span class="text-capitalize">
-        {{ text }}
-      </span>
-    </template>
-  </v-btn>
+  </v-btn-avatar>
   <v-file-input
     ref="inputFile"
     style="display: none"

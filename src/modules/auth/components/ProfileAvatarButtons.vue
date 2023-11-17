@@ -25,17 +25,13 @@ const updateAvatar = () => {
 <template>
   <AppFileBtn
     v-if="!editMode"
-    text="Alterar"
+    icon="mdi-pencil-outline"
     @change="handleFile"
-    >Alterar</AppFileBtn
-  >
-  <v-btn
+  />
+  <v-btn-avatar
     v-else
-    color="black"
-    density="compact"
+    icon="mdi-content-save-outline"
     :loading="isPending"
-    max-width="80"
     @click="updateAvatar"
-    >Salvar</v-btn
-  >
+  />
 </template>
