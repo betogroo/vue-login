@@ -12,6 +12,7 @@ withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   handleFile: [evt: Event]
   updateAvatar: []
+  cancelUpdate: []
 }>()
 
 const handleFile = (evt: Event) => {
@@ -19,6 +20,9 @@ const handleFile = (evt: Event) => {
 }
 const updateAvatar = () => {
   emit('updateAvatar')
+}
+const cancelUpdate = () => {
+  emit('cancelUpdate')
 }
 </script>
 
@@ -28,10 +32,17 @@ const updateAvatar = () => {
     icon="mdi-pencil-outline"
     @change="handleFile"
   />
-  <v-btn-avatar
-    v-else
-    icon="mdi-content-save-outline"
-    :loading="isPending"
-    @click="updateAvatar"
-  />
+  <template v-else>
+    <div class="d-flex flex-column">
+      <v-btn-avatar
+        icon="mdi-content-save-outline"
+        :loading="isPending"
+        @click="updateAvatar"
+      />
+      <v-btn-avatar
+        icon="mdi-close-outline"
+        @click="cancelUpdate"
+      />
+    </div>
+  </template>
 </template>

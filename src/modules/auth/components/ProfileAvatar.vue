@@ -19,7 +19,6 @@ const { avatarInitials } = useHelpers()
   >
     <template v-if="img">
       <v-img
-        alt="John"
         cover
         :src="img"
       ></v-img>

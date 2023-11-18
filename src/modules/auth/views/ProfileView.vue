@@ -81,9 +81,24 @@ const updateAvatar = async (): Promise<void> => {
     console.error('Erro ao atualizar o avatar', error)
   }
 }
+const loadProfile = async () => {
+  console.log('Carregando Perfil')
+  try {
+    if (!user.value) throw Error('Usuario não existente')
+    await getProfile(user.value.id)
+    await downloadImage(profile.value?.avatar_url)
+  } catch (error) {
+    console.error('Erro ao carregar perfil', error)
+  }
+}
 
-if (user.value) await getProfile(user.value.id)
-await downloadImage(profile.value?.avatar_url)
+const cancelUpdate = async () => {
+  await loadProfile()
+  avatarStore.editMode = false
+  avatarStore.file = null
+}
+
+await loadProfile()
 </script>
 
 <template>
@@ -97,6 +112,7 @@ await downloadImage(profile.value?.avatar_url)
         <ProfileAvatarButtons
           :edit-mode="avatarStore.editMode"
           :is-pending="avatarPending"
+          @cancel-update="cancelUpdate"
           @handle-file="handleFile"
           @update-avatar="updateAvatar"
         />
