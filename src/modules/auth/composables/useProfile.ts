@@ -59,7 +59,38 @@ const useProfile = () => {
     }
   }
 
-  return { isPending, error, profile, getProfile, updateProfile }
+  const updateAvatarUrl = async (id: string, avatar_url: string) => {
+    try {
+      const updated_at = new Date().toISOString()
+      error.value = null
+      isPending.value = true
+      const { data, error: err } = await supabase
+        .from('profiles')
+        .update({ avatar_url, updated_at })
+        .eq('id', id)
+        .select()
+        .single()
+      if (!data) throw err
+      const parsedData = ProfileSchema.parse(data)
+      store.profile = parsedData
+      return parsedData
+      //console.log(data)
+      //return data
+    } catch (err) {
+      error.value = handleError(err)
+    } finally {
+      isPending.value = false
+    }
+  }
+
+  return {
+    isPending,
+    error,
+    profile,
+    getProfile,
+    updateProfile,
+    updateAvatarUrl,
+  }
 }
 
 export default useProfile

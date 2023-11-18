@@ -1,65 +1,140 @@
 <script setup lang="ts">
+// library imports
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
+// components
 import {
   ProfileDetails,
   ProfileForm,
   ProfileHead,
   AlertError,
+  ProfileAvatar,
+  ProfileAvatarButtons,
 } from '../components'
-import { storeToRefs } from 'pinia'
+
+// types
+import { Profile } from '../types/Profile'
+
+// store imports
+import { useAvatarStore } from '../store/useAvatarStore'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
-import { useProfile } from '../composables'
-import { Profile } from '../types/Profile'
-const store = useAuthStore()
+
+// composable imports
+import { useProfile, useAvatar } from '../composables'
+
+// store
+const authStore = useAuthStore()
 const profileStore = useProfileStore()
+const avatarStore = useAvatarStore()
+
+// reactive
 const profileForm = ref(false)
-const { user } = storeToRefs(store)
+const { user } = storeToRefs(authStore)
 const { profile, userProfile } = storeToRefs(profileStore)
-const { getProfile, updateProfile, isPending, error } = useProfile()
 
-if (user.value) await getProfile(user.value.id)
+// composables
+const {
+  getProfile,
+  updateProfile: _updateProfile,
+  updateAvatarUrl,
+  isPending,
+  error: profileError,
+} = useProfile()
+const {
+  error: avatarError,
+  isPending: avatarPending,
+  updateAvatar: _updateAvatar,
+  handleFile,
+  downloadImage,
+} = useAvatar()
 
-const handleSubmit = async (value: Profile) => {
-  if (!user.value) return
-  const date = new Date()
-  const updates = {
-    ...value,
-    id: user.value.id,
-    updated_at: date.toISOString(),
-  }
-  await updateProfile(updates)
-  toggleForm()
-}
+// methods
 const toggleForm = () => {
   profileForm.value = !profileForm.value
 }
+
+const updateProfile = async (profile: Profile) => {
+  if (!user.value) return
+  const date = new Date()
+  const updates = {
+    ...profile,
+    id: user.value.id,
+    updated_at: date.toISOString(),
+  }
+  try {
+    await _updateProfile(updates)
+    toggleForm()
+  } catch (error) {
+    console.error('Erro ao atualizar o perfil', error)
+  }
+}
+
+const updateAvatar = async (): Promise<void> => {
+  if (!user.value) return
+  try {
+    const filePath = await _updateAvatar()
+    if (!filePath) throw Error('O arquivo não foi selecionado')
+    await updateAvatarUrl(user.value.id, filePath)
+  } catch (error) {
+    console.error('Erro ao atualizar o avatar', error)
+  }
+}
+const loadProfile = async () => {
+  console.log('Carregando Perfil')
+  try {
+    if (!user.value) throw Error('Usuario não existente')
+    await getProfile(user.value.id)
+    await downloadImage(profile.value?.avatar_url)
+  } catch (error) {
+    console.error('Erro ao carregar perfil', error)
+  }
+}
+
+const cancelUpdate = async () => {
+  await loadProfile()
+  avatarStore.editMode = false
+  avatarStore.file = null
+}
+
+await loadProfile()
 </script>
 
 <template>
   <v-container class="justify-center">
-    <v-responsive
-      class="px-3"
-      max-width="412"
-    >
-      <ProfileHead
+    <v-sheet class="d-flex align-center justify-center">
+      <ProfileAvatar
+        :img="avatarStore.src"
         :user-profile="userProfile"
-        @toggle-form="toggleForm"
       />
-      <ProfileDetails
-        v-if="!profileForm"
-        :user-profile="userProfile"
-        @toggle-form="toggleForm"
-      />
-      <ProfileForm
-        v-if="profileForm"
-        :is-pending="isPending"
-        :profile="profile!"
-        :user="user"
-        @toggle-form="toggleForm"
-        @update-profile="(value) => handleSubmit(value)"
-      />
-      <AlertError :error="error" />
-    </v-responsive>
+      <div class="ml-n16 mb-n16">
+        <ProfileAvatarButtons
+          :edit-mode="avatarStore.editMode"
+          :is-pending="avatarPending"
+          @cancel-update="cancelUpdate"
+          @handle-file="handleFile"
+          @update-avatar="updateAvatar"
+        />
+      </div>
+    </v-sheet>
+    <ProfileHead
+      :user-profile="userProfile"
+      @toggle-form="toggleForm"
+    />
+    <ProfileDetails
+      v-if="!profileForm"
+      :user-profile="userProfile"
+      @toggle-form="toggleForm"
+    />
+    <ProfileForm
+      v-if="profileForm"
+      :is-pending="isPending"
+      :profile="profile!"
+      :user="user"
+      @toggle-form="toggleForm"
+      @update-profile="(profile) => updateProfile(profile)"
+    />
+    <AlertError :error="profileError || avatarError" />
   </v-container>
 </template>
