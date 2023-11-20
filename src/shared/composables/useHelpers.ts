@@ -84,7 +84,7 @@ const useHelpers = () => {
 
   const handleError = (err: unknown) => {
     const e = ErrorSchema.parse(err)
-    console.log(e)
+    console.error('Erro: ', e.message)
     return e.message
   }
   return {
