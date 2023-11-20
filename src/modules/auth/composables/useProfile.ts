@@ -22,7 +22,9 @@ const useProfile = () => {
         status,
       } = await supabase
         .from('profiles')
-        .select('id, username, website, avatar_url, full_name, updated_at')
+        .select(
+          'id, username, website, avatar_url, full_name, updated_at, role',
+        )
         .eq('id', id)
         .single()
       if (err && status !== 406) throw err

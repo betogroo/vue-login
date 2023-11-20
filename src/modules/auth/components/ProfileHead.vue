@@ -14,7 +14,9 @@ defineProps<Props>()
       variant="text"
     >
       <div class="text-h6">{{ userProfile.full_name }}</div>
-      <div class="text-subtitle-1">{{ userProfile.username }}</div>
+      <div class="text-subtitle-1">
+        {{ userProfile.username }} ({{ userProfile.role }})
+      </div>
     </v-col>
   </v-row>
 </template>
