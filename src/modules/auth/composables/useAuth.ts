@@ -8,14 +8,18 @@ const { delay, setDefaultUsername, handleError } = useHelpers()
 const error = ref<Error | null | string>(null)
 const isPending = ref(false)
 
+const clearErrorAndSetPending = async () => {
+  error.value = null
+  isPending.value = true
+  await delay()
+}
+
 const useAuth = () => {
   const store = useAuthStore()
   const signup = async (credentials: Credentials) => {
     try {
       const { email, password, full_name } = credentials
-      error.value = null
-      isPending.value = true
-      await delay()
+      await clearErrorAndSetPending()
       const { data, error: err } = await supabase.auth.signUp({
         email,
         password,
@@ -39,9 +43,7 @@ const useAuth = () => {
   const login = async (credentials: Credentials) => {
     try {
       const { email, password } = credentials
-      error.value = null
-      isPending.value = true
-      await delay()
+      await clearErrorAndSetPending()
       const { data, error: err } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -58,9 +60,7 @@ const useAuth = () => {
 
   const logout = async () => {
     try {
-      error.value = null
-      isPending.value = true
-      await delay()
+      await clearErrorAndSetPending()
       const { error: err } = await supabase.auth.signOut()
       store.user = null
       if (err) throw err
@@ -73,12 +73,10 @@ const useAuth = () => {
 
   const getUser = async () => {
     try {
-      error.value = null
-      isPending.value = true
-      await delay(1)
+      await clearErrorAndSetPending()
       const { data, error: err } = await supabase.auth.getSession()
       if (err) throw err
-      console.log(data)
+      console.log('getUser', data)
       if (!data.session) {
         store.user = null
         return
