@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { supabase } from '@/plugins/supabase'
-import { Profile, ProfileSchema } from '../types/Profile'
+import { type Profile, ProfileSchema } from '../types/Profile'
 import { useHelpers } from '@/shared/composables'
 import { useProfileStore } from '../store/useProfileStore'
 
@@ -24,6 +24,7 @@ const useProfile = () => {
         .from('profiles')
         .select('id, username, website, avatar_url, full_name, updated_at')
         .eq('id', id)
+        .returns<Profile[]>()
         .single()
       if (err && status !== 406) throw err
       if (data) {
