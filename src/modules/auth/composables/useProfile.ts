@@ -4,18 +4,23 @@ import { type Profile, ProfileSchema } from '../types/Profile'
 import { useHelpers } from '@/shared/composables'
 import { useProfileStore } from '../store/useProfileStore'
 
-const { delay, handleError } = useHelpers()
+const { delay: _delay, handleError } = useHelpers()
+const error = ref<Error | null | string>(null)
+const isPending = ref<boolean | string>(false)
+
+const clearErrorAndSetPending = async (action: string, delay = false) => {
+  error.value = null
+  isPending.value = action
+  if (delay) await _delay()
+}
 
 const profile = ref<Profile>()
 const useProfile = () => {
   const store = useProfileStore()
-  const isPending = ref(false)
-  const error = ref<string | null>(null)
 
   const getProfile = async (id: string) => {
     try {
-      error.value = null
-      isPending.value = true
+      await clearErrorAndSetPending('getProfile', true)
       const {
         data,
         error: err,
@@ -40,9 +45,7 @@ const useProfile = () => {
 
   const updateProfile = async (updates: Profile) => {
     try {
-      error.value = null
-      isPending.value = true
-      await delay()
+      await clearErrorAndSetPending('updateProfile', true)
       const parsedData = ProfileSchema.parse(updates)
       const { error: err } = await supabase.from('profiles').upsert(parsedData)
       if (err) throw err
@@ -63,8 +66,7 @@ const useProfile = () => {
   const updateAvatarUrl = async (id: string, avatar_url: string) => {
     try {
       const updated_at = new Date().toISOString()
-      error.value = null
-      isPending.value = true
+      await clearErrorAndSetPending('updateAvatarUrl', true)
       const { data, error: err } = await supabase
         .from('profiles')
         .update({ avatar_url, updated_at })

@@ -1,14 +1,21 @@
 import { ref } from 'vue'
 import { supabase } from '@/plugins/supabase'
 import { useHelpers } from '@/shared/composables'
-const { delay, handleError } = useHelpers()
+const { delay: _delay, handleError } = useHelpers()
 
 import { useAvatarStore } from '../store/useAvatarStore'
 
+const error = ref<Error | null | string>(null)
+const isPending = ref<boolean | string>(false)
+
+const clearErrorAndSetPending = async (action: string, delay = false) => {
+  error.value = null
+  isPending.value = action
+  if (delay) await _delay()
+}
+
 const useAvatar = () => {
   const store = useAvatarStore()
-  const isPending = ref(false)
-  const error = ref<string | null>(null)
 
   const downloadImage = async (avatar_url: string | null | undefined) => {
     try {
@@ -40,8 +47,7 @@ const useAvatar = () => {
 
   const updateAvatar = async () => {
     try {
-      error.value = null
-      isPending.value = true
+      clearErrorAndSetPending('updateAvatar', true)
       if (!store.file) throw new Error('Nenhuma imagem foi selecionada')
       const fileExt = store.file.name.split('.').pop()
       const filePath = `${Date.now()}.${fileExt}`
@@ -50,7 +56,7 @@ const useAvatar = () => {
         .from('avatars')
         .upload(filePath, store.file)
       if (uploadError) throw uploadError
-      await delay()
+      await _delay()
       store.editMode = false
       return data.path
     } catch (err) {
