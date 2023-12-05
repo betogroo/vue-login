@@ -42,13 +42,7 @@ const {
   updateProfile: _updateProfile,
   updateAvatarUrl,
 } = useProfile()
-const {
-  error: avatarError,
-  isPending: avatarPending,
-  updateAvatar: _updateAvatar,
-  handleFile,
-  downloadImage,
-} = useAvatar()
+const { updateAvatar: _updateAvatar, handleFile, downloadImage } = useAvatar()
 
 // methods
 const toggleForm = () => {
@@ -111,7 +105,7 @@ await loadProfile()
       <div class="ml-n16 mb-n16">
         <ProfileAvatarButtons
           :edit-mode="avatarStore.editMode"
-          :is-pending="avatarPending === 'updateAvatar'"
+          :is-pending="feedbackStore.isPending === 'updateAvatar'"
           @cancel-update="cancelUpdate"
           @handle-file="handleFile"
           @update-avatar="updateAvatar"
@@ -135,6 +129,6 @@ await loadProfile()
       @toggle-form="toggleForm"
       @update-profile="(profile) => updateProfile(profile)"
     />
-    <AlertError :error="feedbackStore.error || avatarError" />
+    <AlertError :error="feedbackStore.error" />
   </v-container>
 </template>

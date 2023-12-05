@@ -1,21 +1,13 @@
-import { ref } from 'vue'
 import { supabase } from '@/plugins/supabase'
 import { useHelpers } from '@/shared/composables'
 const { delay: _delay, handleError } = useHelpers()
 
 import { useAvatarStore } from '../store/useAvatarStore'
-
-const error = ref<Error | null | string>(null)
-const isPending = ref<boolean | string>(false)
-
-const clearErrorAndSetPending = async (action: string, delay = false) => {
-  error.value = null
-  isPending.value = action
-  if (delay) await _delay()
-}
+import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
 
 const useAvatar = () => {
   const store = useAvatarStore()
+  const feedbackStore = useFeedbackStore()
 
   const downloadImage = async (avatar_url: string | null | undefined) => {
     try {
@@ -26,7 +18,7 @@ const useAvatar = () => {
       if (err) throw err
       store.src = URL.createObjectURL(data)
     } catch (err) {
-      error.value = handleError(err)
+      feedbackStore.error = handleError(err)
     }
   }
 
@@ -47,7 +39,7 @@ const useAvatar = () => {
 
   const updateAvatar = async () => {
     try {
-      clearErrorAndSetPending('updateAvatar', true)
+      feedbackStore.clearErrorAndSetPending('updateAvatar', true)
       if (!store.file) throw new Error('Nenhuma imagem foi selecionada')
       const fileExt = store.file.name.split('.').pop()
       const filePath = `${Date.now()}.${fileExt}`
@@ -60,12 +52,12 @@ const useAvatar = () => {
       store.editMode = false
       return data.path
     } catch (err) {
-      error.value = handleError(err)
+      feedbackStore.error = handleError(err)
     } finally {
-      isPending.value = false
+      feedbackStore.isPending = false
     }
   }
-  return { isPending, error, updateAvatar, handleFile, downloadImage }
+  return { updateAvatar, handleFile, downloadImage }
 }
 
 export default useAvatar
