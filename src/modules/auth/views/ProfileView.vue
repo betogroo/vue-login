@@ -20,6 +20,7 @@ import { Profile } from '../types/Profile'
 import { useAvatarStore } from '../store/useAvatarStore'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
+import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
 
 // composable imports
 import { useProfile, useAvatar } from '../composables'
@@ -28,6 +29,7 @@ import { useProfile, useAvatar } from '../composables'
 const authStore = useAuthStore()
 const profileStore = useProfileStore()
 const avatarStore = useAvatarStore()
+const feedbackStore = useFeedbackStore()
 
 // reactive
 const profileForm = ref(false)
@@ -39,8 +41,6 @@ const {
   getProfile,
   updateProfile: _updateProfile,
   updateAvatarUrl,
-  isPending: profilePending,
-  error: profileError,
 } = useProfile()
 const {
   error: avatarError,
@@ -129,12 +129,12 @@ await loadProfile()
     />
     <ProfileForm
       v-if="profileForm"
-      :is-pending="profilePending === 'updateProfile'"
+      :is-pending="feedbackStore.isPending === 'updateProfile'"
       :profile="profile!"
       :user="user"
       @toggle-form="toggleForm"
       @update-profile="(profile) => updateProfile(profile)"
     />
-    <AlertError :error="profileError || avatarError" />
+    <AlertError :error="feedbackStore.error || avatarError" />
   </v-container>
 </template>
