@@ -20,6 +20,7 @@ import { Profile } from '../types/Profile'
 import { useAvatarStore } from '../store/useAvatarStore'
 import { useAuthStore } from '../store/useAuthStore'
 import { useProfileStore } from '../store/useProfileStore'
+import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
 
 // composable imports
 import { useProfile, useAvatar } from '../composables'
@@ -28,6 +29,7 @@ import { useProfile, useAvatar } from '../composables'
 const authStore = useAuthStore()
 const profileStore = useProfileStore()
 const avatarStore = useAvatarStore()
+const feedbackStore = useFeedbackStore()
 
 // reactive
 const profileForm = ref(false)
@@ -39,16 +41,8 @@ const {
   getProfile,
   updateProfile: _updateProfile,
   updateAvatarUrl,
-  isPending: profilePending,
-  error: profileError,
 } = useProfile()
-const {
-  error: avatarError,
-  isPending: avatarPending,
-  updateAvatar: _updateAvatar,
-  handleFile,
-  downloadImage,
-} = useAvatar()
+const { updateAvatar: _updateAvatar, handleFile, downloadImage } = useAvatar()
 
 // methods
 const toggleForm = () => {
@@ -111,7 +105,7 @@ await loadProfile()
       <div class="ml-n16 mb-n16">
         <ProfileAvatarButtons
           :edit-mode="avatarStore.editMode"
-          :is-pending="avatarPending === 'updateAvatar'"
+          :is-pending="feedbackStore.isPending === 'updateAvatar'"
           @cancel-update="cancelUpdate"
           @handle-file="handleFile"
           @update-avatar="updateAvatar"
@@ -129,12 +123,12 @@ await loadProfile()
     />
     <ProfileForm
       v-if="profileForm"
-      :is-pending="profilePending === 'updateProfile'"
+      :is-pending="feedbackStore.isPending === 'updateProfile'"
       :profile="profile!"
       :user="user"
       @toggle-form="toggleForm"
       @update-profile="(profile) => updateProfile(profile)"
     />
-    <AlertError :error="profileError || avatarError" />
+    <AlertError :error="feedbackStore.error" />
   </v-container>
 </template>
