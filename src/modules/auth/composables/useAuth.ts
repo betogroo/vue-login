@@ -3,15 +3,15 @@ import { supabase } from '@/plugins/supabase'
 import { Credentials } from '../types/Auth'
 import { useHelpers } from '@/shared/composables'
 import { useAuthStore } from '../store/useAuthStore'
-const { delay, setDefaultUsername, handleError } = useHelpers()
+const { delay: _delay, setDefaultUsername, handleError } = useHelpers()
 
 const error = ref<Error | null | string>(null)
-const isPending = ref(false)
+const isPending = ref<boolean | string>(false)
 
-const clearErrorAndSetPending = async () => {
+const clearErrorAndSetPending = async (action: string, delay = false) => {
   error.value = null
-  isPending.value = true
-  await delay()
+  isPending.value = action
+  if (delay) await _delay()
 }
 
 const useAuth = () => {
@@ -19,7 +19,7 @@ const useAuth = () => {
   const signup = async (credentials: Credentials) => {
     try {
       const { email, password, full_name } = credentials
-      await clearErrorAndSetPending()
+      await clearErrorAndSetPending('signup', true)
       const { data, error: err } = await supabase.auth.signUp({
         email,
         password,
@@ -43,7 +43,7 @@ const useAuth = () => {
   const login = async (credentials: Credentials) => {
     try {
       const { email, password } = credentials
-      await clearErrorAndSetPending()
+      await clearErrorAndSetPending('login', true)
       const { data, error: err } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -60,7 +60,7 @@ const useAuth = () => {
 
   const logout = async () => {
     try {
-      await clearErrorAndSetPending()
+      await clearErrorAndSetPending('logout', true)
       const { error: err } = await supabase.auth.signOut()
       store.user = null
       if (err) throw err
@@ -73,7 +73,7 @@ const useAuth = () => {
 
   const getUser = async () => {
     try {
-      await clearErrorAndSetPending()
+      await clearErrorAndSetPending('getUser', true)
       const { data, error: err } = await supabase.auth.getSession()
       if (err) throw err
       console.log('getUser', data)

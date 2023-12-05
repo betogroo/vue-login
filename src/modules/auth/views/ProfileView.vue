@@ -39,7 +39,7 @@ const {
   getProfile,
   updateProfile: _updateProfile,
   updateAvatarUrl,
-  isPending,
+  isPending: profilePending,
   error: profileError,
 } = useProfile()
 const {
@@ -111,7 +111,7 @@ await loadProfile()
       <div class="ml-n16 mb-n16">
         <ProfileAvatarButtons
           :edit-mode="avatarStore.editMode"
-          :is-pending="avatarPending"
+          :is-pending="avatarPending === 'updateAvatar'"
           @cancel-update="cancelUpdate"
           @handle-file="handleFile"
           @update-avatar="updateAvatar"
@@ -129,7 +129,7 @@ await loadProfile()
     />
     <ProfileForm
       v-if="profileForm"
-      :is-pending="isPending"
+      :is-pending="profilePending === 'updateProfile'"
       :profile="profile!"
       :user="user"
       @toggle-form="toggleForm"
