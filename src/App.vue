@@ -3,10 +3,12 @@ import { useAuthStore } from './modules/auth/store/useAuthStore'
 import { AppBar } from '@/shared/components'
 import { useAuth } from './modules/auth/composables'
 import { useRoute, useRouter } from 'vue-router'
-const { logout, isPending: logoutPending } = useAuth()
+import { useFeedbackStore } from './shared/store/useFeedbackStore'
+const { logout } = useAuth()
 const route = useRoute()
 const router = useRouter()
 const store = useAuthStore()
+const feedbackStore = useFeedbackStore()
 
 const handleLogout = async () => {
   await logout().then(() => {
@@ -18,7 +20,7 @@ const handleLogout = async () => {
   <v-app>
     <AppBar
       v-if="!route.meta.hideAppBar"
-      :is-pending="logoutPending === 'logout'"
+      :is-pending="feedbackStore.isPending === 'logout'"
       :user="store.user"
       @logout="handleLogout"
     />
