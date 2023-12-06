@@ -4,10 +4,13 @@ const { delay: _delay, handleError } = useHelpers()
 
 import { useAvatarStore } from '../store/useAvatarStore'
 import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
+import { storeToRefs } from 'pinia'
 
 const useAvatar = () => {
   const store = useAvatarStore()
   const feedbackStore = useFeedbackStore()
+
+  const { error, isPending } = storeToRefs(feedbackStore)
 
   const downloadImage = async (avatar_url: string | null | undefined) => {
     try {
@@ -57,7 +60,7 @@ const useAvatar = () => {
       feedbackStore.isPending = false
     }
   }
-  return { updateAvatar, handleFile, downloadImage }
+  return { error, isPending, updateAvatar, handleFile, downloadImage }
 }
 
 export default useAvatar

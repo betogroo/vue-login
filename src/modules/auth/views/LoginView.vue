@@ -3,10 +3,7 @@ import { AlertError, LoginForm } from '../components'
 import { useRouter } from 'vue-router'
 import type { Credentials } from '../types/Auth'
 import { useAuth } from '../composables'
-import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
-const { login } = useAuth()
-
-const feedbackStore = useFeedbackStore()
+const { error, isPending, login } = useAuth()
 
 const router = useRouter()
 
@@ -32,10 +29,10 @@ const handleLogin = async (credentials: Credentials) => {
         <div class="text-center text-h4 pb-2">Login</div>
       </template>
       <LoginForm
-        :is-pending="feedbackStore.isPending === 'login'"
+        :is-pending="isPending === 'login'"
         @login="(credentials) => handleLogin(credentials)"
       />
-      <AlertError :error="feedbackStore.error" />
+      <AlertError :error="error" />
     </v-card>
   </v-container>
 </template>

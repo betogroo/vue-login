@@ -4,6 +4,7 @@ import { type Profile, ProfileSchema } from '../types/Profile'
 import { useHelpers } from '@/shared/composables'
 import { useProfileStore } from '../store/useProfileStore'
 import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
+import { storeToRefs } from 'pinia'
 
 const { handleError } = useHelpers()
 
@@ -12,6 +13,7 @@ const useProfile = () => {
   //store
   const store = useProfileStore()
   const feedbackStore = useFeedbackStore()
+  const { error, isPending } = storeToRefs(feedbackStore)
 
   const getProfile = async (id: string) => {
     try {
@@ -81,6 +83,8 @@ const useProfile = () => {
     }
   }
   return {
+    error,
+    isPending,
     profile,
     getProfile,
     updateAvatarUrl,

@@ -1,14 +1,15 @@
-import { ref } from 'vue'
 import { supabase } from '@/plugins/supabase'
 import { Credentials } from '../types/Auth'
 import { useHelpers } from '@/shared/composables'
 import { useAuthStore } from '../store/useAuthStore'
 import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
+import { storeToRefs } from 'pinia'
 const { setDefaultUsername, handleError } = useHelpers()
 
 const useAuth = () => {
   const store = useAuthStore()
   const feedbackStore = useFeedbackStore()
+  const { error, isPending } = storeToRefs(feedbackStore)
   const signup = async (credentials: Credentials) => {
     try {
       const { email, password, full_name } = credentials
@@ -87,8 +88,8 @@ const useAuth = () => {
   }
 
   return {
-    //isPending,
-    //error,
+    isPending,
+    error,
     signup,
     login,
     logout,
