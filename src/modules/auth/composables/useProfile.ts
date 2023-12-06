@@ -3,24 +3,19 @@ import { supabase } from '@/plugins/supabase'
 import { type Profile, ProfileSchema } from '../types/Profile'
 import { useHelpers } from '@/shared/composables'
 import { useProfileStore } from '../store/useProfileStore'
+import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
 
-const { delay: _delay, handleError } = useHelpers()
-const error = ref<Error | null | string>(null)
-const isPending = ref<boolean | string>(false)
-
-const clearErrorAndSetPending = async (action: string, delay = false) => {
-  error.value = null
-  isPending.value = action
-  if (delay) await _delay()
-}
+const { handleError } = useHelpers()
 
 const profile = ref<Profile>()
 const useProfile = () => {
+  //store
   const store = useProfileStore()
+  const feedbackStore = useFeedbackStore()
 
   const getProfile = async (id: string) => {
     try {
-      await clearErrorAndSetPending('getProfile', true)
+      await feedbackStore.clearErrorAndSetPending('getProfile', true)
       const {
         data,
         error: err,
@@ -37,36 +32,16 @@ const useProfile = () => {
         store.profile = parsedData
       }
     } catch (err) {
-      error.value = handleError(err)
+      feedbackStore.error = handleError(err)
     } finally {
-      isPending.value = false
-    }
-  }
-
-  const updateProfile = async (updates: Profile) => {
-    try {
-      await clearErrorAndSetPending('updateProfile', true)
-      const parsedData = ProfileSchema.parse(updates)
-      const { error: err } = await supabase.from('profiles').upsert(parsedData)
-      if (err) throw err
-      await supabase.auth.updateUser({
-        data: {
-          full_name: parsedData.full_name,
-          username: parsedData.username,
-        },
-      })
-      store.profile = parsedData
-    } catch (err) {
-      error.value = handleError(err)
-    } finally {
-      isPending.value = false
+      feedbackStore.isPending = false
     }
   }
 
   const updateAvatarUrl = async (id: string, avatar_url: string) => {
     try {
       const updated_at = new Date().toISOString()
-      await clearErrorAndSetPending('updateAvatarUrl', true)
+      await feedbackStore.clearErrorAndSetPending('updateAvatarUrl', true)
       const { data, error: err } = await supabase
         .from('profiles')
         .update({ avatar_url, updated_at })
@@ -80,19 +55,36 @@ const useProfile = () => {
       //console.log(data)
       //return data
     } catch (err) {
-      error.value = handleError(err)
+      feedbackStore.error = handleError(err)
     } finally {
-      isPending.value = false
+      feedbackStore.isPending = false
     }
   }
 
+  const updateProfile = async (updates: Profile) => {
+    try {
+      await feedbackStore.clearErrorAndSetPending('updateProfile', true)
+      const parsedData = ProfileSchema.parse(updates)
+      const { error: err } = await supabase.from('profiles').upsert(parsedData)
+      if (err) throw err
+      await supabase.auth.updateUser({
+        data: {
+          full_name: parsedData.full_name,
+          username: parsedData.username,
+        },
+      })
+      store.profile = parsedData
+    } catch (err) {
+      feedbackStore.error = handleError(err)
+    } finally {
+      feedbackStore.isPending = false
+    }
+  }
   return {
-    isPending,
-    error,
     profile,
     getProfile,
-    updateProfile,
     updateAvatarUrl,
+    updateProfile,
   }
 }
 

@@ -3,23 +3,16 @@ import { supabase } from '@/plugins/supabase'
 import { Credentials } from '../types/Auth'
 import { useHelpers } from '@/shared/composables'
 import { useAuthStore } from '../store/useAuthStore'
-const { delay: _delay, setDefaultUsername, handleError } = useHelpers()
-
-const error = ref<Error | null | string>(null)
-const isPending = ref<boolean | string>(false)
-
-const clearErrorAndSetPending = async (action: string, delay = false) => {
-  error.value = null
-  isPending.value = action
-  if (delay) await _delay()
-}
+import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
+const { setDefaultUsername, handleError } = useHelpers()
 
 const useAuth = () => {
   const store = useAuthStore()
+  const feedbackStore = useFeedbackStore()
   const signup = async (credentials: Credentials) => {
     try {
       const { email, password, full_name } = credentials
-      await clearErrorAndSetPending('signup', true)
+      await feedbackStore.clearErrorAndSetPending('signup', true)
       const { data, error: err } = await supabase.auth.signUp({
         email,
         password,
@@ -34,16 +27,16 @@ const useAuth = () => {
       store.setUser(data.user)
       return data.user
     } catch (err) {
-      error.value = handleError(err)
+      feedbackStore.error = handleError(err)
     } finally {
-      isPending.value = false
+      feedbackStore.isPending = false
     }
   }
 
   const login = async (credentials: Credentials) => {
     try {
       const { email, password } = credentials
-      await clearErrorAndSetPending('login', true)
+      await feedbackStore.clearErrorAndSetPending('login', true)
       const { data, error: err } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -52,28 +45,28 @@ const useAuth = () => {
       store.setUser(data.user)
       return data.user
     } catch (err) {
-      error.value = handleError(err)
+      feedbackStore.error = handleError(err)
     } finally {
-      isPending.value = false
+      feedbackStore.isPending = false
     }
   }
 
   const logout = async () => {
     try {
-      await clearErrorAndSetPending('logout', true)
+      await feedbackStore.clearErrorAndSetPending('logout', true)
       const { error: err } = await supabase.auth.signOut()
       store.user = null
       if (err) throw err
     } catch (err) {
-      error.value = handleError(err)
+      feedbackStore.error = handleError(err)
     } finally {
-      isPending.value = false
+      feedbackStore.isPending = false
     }
   }
 
   const getUser = async () => {
     try {
-      await clearErrorAndSetPending('getUser', true)
+      await feedbackStore.clearErrorAndSetPending('getUser', true)
       const { data, error: err } = await supabase.auth.getSession()
       if (err) throw err
       console.log('getUser', data)
@@ -86,7 +79,7 @@ const useAuth = () => {
       const e = err as Error
       console.error('Erro:', e)
     } finally {
-      isPending.value = false
+      feedbackStore.isPending = false
     }
   }
   const isLogged = () => {
@@ -94,8 +87,8 @@ const useAuth = () => {
   }
 
   return {
-    isPending,
-    error,
+    //isPending,
+    //error,
     signup,
     login,
     logout,
