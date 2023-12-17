@@ -9,6 +9,7 @@ import { storeToRefs } from 'pinia'
 const { handleError } = useHelpers()
 
 const profile = ref<Profile>()
+const roleIds = ref()
 const useProfile = () => {
   //store
   const store = useProfileStore()
@@ -37,6 +38,23 @@ const useProfile = () => {
       feedbackStore.error = handleError(err)
     } finally {
       feedbackStore.isPending = false
+    }
+  }
+
+  const checkRoles = async (user_id: string, role_id: number) => {
+    console.log(role_id)
+    try {
+      const { data: userRoles, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role_id')
+        .eq('user_id', user_id)
+      if (roleError) throw roleError
+      console.log(userRoles)
+      roleIds.value = userRoles.map((role) => role.role_id)
+      console.log(roleIds.value)
+      return roleIds.value
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -86,6 +104,8 @@ const useProfile = () => {
     error,
     isPending,
     profile,
+    roleIds,
+    checkRoles,
     getProfile,
     updateAvatarUrl,
     updateProfile,

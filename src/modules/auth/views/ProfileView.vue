@@ -38,7 +38,9 @@ const { profile, userProfile } = storeToRefs(profileStore)
 const {
   error,
   isPending,
+  roleIds,
   getProfile,
+  checkRoles,
   updateProfile: _updateProfile,
   updateAvatarUrl,
 } = useProfile()
@@ -86,6 +88,7 @@ const loadProfile = async () => {
   try {
     if (!user.value) throw Error('Usuario não existente')
     await getProfile(user.value.id)
+    await checkRoles(user.value.id, 2)
     await downloadImage(profile.value?.avatar_url)
   } catch (error) {
     console.error('Erro ao carregar perfil', error)
@@ -103,6 +106,7 @@ await loadProfile()
 
 <template>
   <v-container class="justify-center">
+    <div class="text-h1">{{ roleIds }}</div>
     <v-sheet class="d-flex align-center justify-center">
       <ProfileAvatar
         :img="avatarStore.src"
