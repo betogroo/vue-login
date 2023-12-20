@@ -15,7 +15,14 @@ const useRole = () => {
       console.log(err)
     }
   }
-  return { getUserRoles }
+
+  const checkRoles = async (
+    user_roles: number[],
+    role: string,
+  ): Promise<boolean> => {
+    return true
+  }
+  return { getUserRoles, checkRoles }
 }
 
 export default useRole
