@@ -1,6 +1,11 @@
 import { ref } from 'vue'
 import { supabase } from '@/plugins/supabase'
-import { type Profile, ProfileSchema } from '../types/Profile'
+import {
+  type Profile,
+  ProfileSchema,
+  ProfileWithRoles,
+  ProfileWithRolesSchema,
+} from '../types/Profile'
 import { useHelpers } from '@/shared/composables'
 import useRole from './useRole'
 import { useProfileStore } from '../store/useProfileStore'
@@ -34,7 +39,7 @@ const useProfile = () => {
       if (data) {
         const userRoles = await getUserRoles(id)
         const profile = { ...data, roles: userRoles }
-        const parsedData = ProfileSchema.parse(profile)
+        const parsedData = ProfileWithRolesSchema.parse(profile)
         store.profile = parsedData
       }
     } catch (err) {

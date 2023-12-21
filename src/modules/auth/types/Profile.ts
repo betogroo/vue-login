@@ -17,12 +17,15 @@ export const ProfileSchema = z.object({
     .min(6, 'O Nome Completo deve conter no mínimo 6 caracteres')
     .nullish(),
   updated_at: z.string().nullish(),
-  roles: z.array(RoleSchema),
 })
 
 export const UserProfileSchema = UserSchema.merge(ProfileSchema)
+export const ProfileWithRolesSchema = ProfileSchema.extend({
+  roles: z.array(RoleSchema),
+})
 
 export const validationProfileSchema = toTypedSchema(ProfileSchema)
 
 export type Profile = z.infer<typeof ProfileSchema>
+export type ProfileWithRoles = z.infer<typeof ProfileWithRolesSchema>
 export type UserProfile = z.infer<typeof UserProfileSchema>

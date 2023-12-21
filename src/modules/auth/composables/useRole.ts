@@ -1,5 +1,5 @@
 import { supabase } from '@/plugins/supabase'
-import type { Profile } from '../types/Profile'
+import type { ProfileWithRoles } from '../types/Profile'
 import type { Role } from '../types/Role'
 
 const useRole = () => {
@@ -18,7 +18,7 @@ const useRole = () => {
   }
 
   const checkRoles = async (
-    user_roles: Profile['roles'],
+    user_roles: ProfileWithRoles['roles'],
     role: number,
   ): Promise<boolean> => {
     const { data: roleData, error: roleError } = await supabase
