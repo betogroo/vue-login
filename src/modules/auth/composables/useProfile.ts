@@ -7,7 +7,7 @@ import { useProfileStore } from '../store/useProfileStore'
 import { useFeedbackStore } from '@/shared/store/useFeedbackStore'
 import { storeToRefs } from 'pinia'
 
-const { getUserRoles } = useRole()
+const { getUserRoles, checkRoles, testUserRoles } = useRole()
 const { handleError } = useHelpers()
 
 const profile = ref<Profile>()
@@ -19,6 +19,8 @@ const useProfile = () => {
 
   const getProfile = async (id: string) => {
     try {
+      const test = await testUserRoles(id)
+      console.log(test)
       await feedbackStore.clearErrorAndSetPending('getProfile', true)
       const {
         data,
@@ -33,7 +35,8 @@ const useProfile = () => {
       if (err && status !== 406) throw err
       if (data) {
         const userRoles = await getUserRoles(id)
-        console.log(userRoles)
+        const isAdmin = await checkRoles(userRoles, 1)
+        console.log(isAdmin)
         const profile = { ...data, roles: userRoles }
         const parsedData = ProfileSchema.parse(profile)
         store.profile = parsedData
