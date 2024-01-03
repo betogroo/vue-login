@@ -11,7 +11,8 @@
     "check-types": "tsc --noEmit",
     "vue-check-types": "vue-tsc --noEmit",
     "prepare": "husky install",
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/logo.png"
   },
   "dependencies": {
     "@mdi/font": "7.4.47",
