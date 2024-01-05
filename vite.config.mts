@@ -69,6 +69,8 @@ export default defineConfig({
   define: {
     'process.env': {},
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+    __APP_NAME__: JSON.stringify(process.env.npm_package_name),
   },
   resolve: {
     alias: {
