@@ -23,6 +23,16 @@ const routes: CustomRouteRecordRaw[] = [
     },
   },
   {
+    path: '/reset',
+    name: 'ResetView',
+    component: () => import('../views/ResetView.vue'),
+    meta: {
+      requiresAuth: false,
+      title: 'Reset Password',
+      hideAppBar: true,
+    },
+  },
+  {
     path: '/profile',
     name: 'ProfileView',
     component: () => import('../views/ProfileView.vue'),

@@ -1,29 +1,26 @@
 <script setup lang="ts">
-import { Credentials, validationLoginSchema } from '../types/Auth'
+import { Reset, validationResetSchema } from '../types/Auth'
 import { useField, useForm } from 'vee-validate'
 
 interface Props {
   isPending?: boolean
-  showResetPasswordLink?: boolean
 }
 withDefaults(defineProps<Props>(), {
   isPending: false,
-  showResetPasswordLink: true,
 })
 
 const emit = defineEmits<{
-  login: [credentials: Credentials]
+  reset: [reset: Reset]
 }>()
 
-const { values, handleSubmit, meta } = useForm<Credentials>({
-  validationSchema: validationLoginSchema,
+const { values, handleSubmit, meta } = useForm<Reset>({
+  validationSchema: validationResetSchema,
 })
 
-const email = useField('email', validationLoginSchema)
-const password = useField('password', validationLoginSchema)
+const email = useField('email', validationResetSchema)
 
 const onSubmit = handleSubmit(async () => {
-  emit('login', values)
+  emit('reset', values)
 })
 </script>
 
@@ -44,17 +41,7 @@ const onSubmit = handleSubmit(async () => {
           variant="outlined"
         />
       </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="password.value.value"
-          density="compact"
-          :error-messages="password.errorMessage.value"
-          label="Senha"
-          placeholder="A senha deve conter números e letras"
-          type="password"
-          variant="outlined"
-        />
-      </v-col>
+
       <v-col>
         <v-btn
           block
@@ -63,17 +50,6 @@ const onSubmit = handleSubmit(async () => {
           :loading="isPending"
           type="submit"
           >Login</v-btn
-        >
-        <v-row v-if="showResetPasswordLink"
-          ><v-col class="text-right">
-            <v-btn
-              class="text-none"
-              slim
-              :to="{ name: 'ResetView' }"
-              variant="plain"
-              >Esqueceu sua senha?</v-btn
-            >
-          </v-col></v-row
         >
       </v-col>
     </v-row>

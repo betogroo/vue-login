@@ -1,5 +1,6 @@
 import AlertError from './AlertError.vue'
 import LoginForm from './LoginForm.vue'
+import ResetForm from './ResetForm.vue'
 import ProfileAvatarButtons from './ProfileAvatarButtons.vue'
 import ProfileAvatar from './ProfileAvatar.vue'
 import ProfileDetails from './ProfileDetails.vue'
@@ -11,6 +12,7 @@ import SignupForm from './SignupForm.vue'
 export {
   AlertError,
   LoginForm,
+  ResetForm,
   ProfileAvatarButtons,
   ProfileAvatar,
   ProfileDetails,
