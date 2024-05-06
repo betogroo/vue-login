@@ -9,8 +9,8 @@
       "",
       "<template>",
       "\t<div></div>",
-      "</template>"
-    ]
+      "</template>",
+    ],
   },
   "Vue 3 Options Api TS": {
     "scope": "vue, html",
@@ -24,8 +24,8 @@
       "\t\treturn {}",
       "\t}",
       "})",
-      "</script>"
-    ]
+      "</script>",
+    ],
   },
   "Vue 3 Composition Api": {
     "scope": "vue, html",
@@ -38,38 +38,38 @@
       "\t\treturn {$1}",
       "\t}",
       "})",
-      "</script>"
-    ]
+      "</script>",
+    ],
   },
   "Vue3 Script Setup": {
     "scope": "vue, html",
     "prefix": "v3-sfc",
-    "body": ["<script setup lang=\"ts\">", "$1", "</script>"]
+    "body": ["<script setup lang=\"ts\">", "$1", "</script>"],
   },
   "Vue3 Template": {
     "scope": "vue, html",
     "prefix": "v3-template",
-    "body": ["<template>", "\t<div></div>", "</template>"]
+    "body": ["<template>", "\t<div></div>", "</template>"],
   },
   "SCSS Scoped": {
     "scope": "vue, html",
     "prefix": "v3-scss-scoped",
-    "body": ["<style lang=\"scss\" scoped></style>"]
+    "body": ["<style lang=\"scss\" scoped></style>"],
   },
   "Vue 3 Form Submit Prevent": {
     "scope": "vue, html",
     "prefix": "v3-form-submit-prevent",
-    "body": ["<form @submit.prevent=\"handleSubmit\">", "\t$1", "</form>"]
+    "body": ["<form @submit.prevent=\"handleSubmit\">", "\t$1", "</form>"],
   },
   "Vue DIV v-if": {
     "scope": "vue, html",
     "prefix": "v3-div-v-if",
-    "body": ["<div v-if=\"$1\">$2</ div>"]
+    "body": ["<div v-if=\"$1\">$2</ div>"],
   },
   "Vue DIV v-else": {
     "scope": "vue, html",
     "prefix": "v3-div-v-else",
-    "body": ["<div v-else>$1</ div>"]
+    "body": ["<div v-else>$1</ div>"],
   },
 
   // VUE 3 JS / TS
@@ -83,13 +83,13 @@
       "const props = withDefaults(defineProps<Props>(), {",
       "${1:prop}: ${3:value}",
       "})",
-      ""
-    ]
+      "",
+    ],
   },
   "Vue Computed": {
     "scope": "javascript,typescript",
     "prefix": "v3-computed",
-    "body": ["const ${1:name} = computed(() => {", "\treturn", "})"]
+    "body": ["const ${1:name} = computed(() => {", "\treturn", "})"],
   },
   "Vue 3 Define Props": {
     "scope": "javascript,typescript",
@@ -99,8 +99,8 @@
       "${1:prop}: ${2:type}",
       "}",
       "const props = defineProps<Props>()",
-      ""
-    ]
+      "",
+    ],
   },
   "Vue 3 Base Route": {
     "scope": "javascript,typescript",
@@ -114,8 +114,8 @@
       "\t\trequiresAuth: $4,",
       "\t\ttitle: '$2'",
       "\t}",
-      "}"
-    ]
+      "}",
+    ],
   },
   "Vue 3 Pinia Store": {
     "scope": "javascript,typescript",
@@ -125,8 +125,8 @@
       "\tstate: () => ({}),",
       "\tgetters: {},",
       "\tactions: {}",
-      "})"
-    ]
+      "})",
+    ],
   },
   "Vue 3 Composable Base": {
     "scope": "javascript,typescript",
@@ -136,8 +136,8 @@
       "\treturn {  }",
       "}",
       "",
-      "export default ${TM_FILENAME_BASE}"
-    ]
+      "export default ${TM_FILENAME_BASE}",
+    ],
   },
   "Vue 3 Composable with basic refs ": {
     "scope": "javascript,typescript",
@@ -150,8 +150,8 @@
       "\treturn { isPending, error  }",
       "}",
       "",
-      "export default ${TM_FILENAME_BASE}"
-    ]
+      "export default ${TM_FILENAME_BASE}",
+    ],
   },
   "HANDLE CLICK": {
     "scope": "javascript,typescript",
@@ -159,28 +159,28 @@
     "body": [
       "const ${1:handleClick} = () => {",
       "${2:console.log(data.value)}",
-      "}"
-    ]
+      "}",
+    ],
   },
   "HANDLE CLICK ASYNC": {
     "scope": "javascript,typescript",
     "prefix": "v3-handle-click-async",
-    "body": ["const ${1:handleClick} = async () => {", "$await ", "}"]
+    "body": ["const ${1:handleClick} = async () => {", "$await ", "}"],
   },
   "HANDLE SUBMIT": {
     "scope": "javascript,typescript",
     "prefix": "v3-handle-submit",
-    "body": ["const handleSubmit = () => {", "console.log(data.value)", "}"]
+    "body": ["const handleSubmit = () => {", "console.log(data.value)", "}"],
   },
   "Vue 3 Watch": {
     "scope": "javascript,typescript",
     "prefix": "v3-watch",
-    "body": ["watch(() => foo, (newValue, oldValue) => {", "\t$1", "})"]
+    "body": ["watch(() => foo, (newValue, oldValue) => {", "\t$1", "})"],
   },
   "Vue 3 On Before Mount": {
     "scope": "javascript,typescript",
     "prefix": "v3-onBeforeMount",
-    "body": ["onBeforeMount(() => {})"]
+    "body": ["onBeforeMount(() => {})"],
   },
   // VUETIFY TEMPLATE AND COMPONENTES
   "Vuetify Centered Container": {
@@ -191,8 +191,8 @@
       "\t<v-responsive class=\"text-center\">",
       "\t\t$1",
       "\t</v-responsive>",
-      "</v-container>"
-    ]
+      "</v-container>",
+    ],
   },
   //TS / JS BASICS
   "Try/Catch/Finaly": {
@@ -209,7 +209,7 @@
       "\tconsole.log(e)",
       "} finally {",
       "\tisPending.value = false",
-      "}"
-    ]
-  }
+      "}",
+    ],
+  },
 }
