@@ -8,11 +8,10 @@
     "eamodio.gitlens",
     "pkief.material-icon-theme",
     "esbenp.prettier-vscode",
-    "vue.vscode-typescript-vue-plugin",
-    "vue.volar",
     "lukas-tr.materialdesignicons-intellisense",
     "sdras.vue-vscode-snippets",
     "formulahendry.auto-rename-tag",
-    "shinotatwu-ds.file-tree-generator"
+    "shinotatwu-ds.file-tree-generator",
+    "vue.volar"
   ]
 }
